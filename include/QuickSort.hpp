@@ -4,8 +4,8 @@
 #include <cstdlib>  // 用于随机数生成
 #include "Sort.hpp"
 
-template <typename T>
-class QuickSort : public Sort<T> {
+template <typename T, typename DisplayType = DisplayPic<T>>
+class QuickSort : public Sort<T, DisplayType> {
    private:
     /**
      * @brief 插入排序，当子数组较小时调用

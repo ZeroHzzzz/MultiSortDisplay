@@ -1,9 +1,8 @@
 #include <iostream>
+#include "./include/BubbleSort.hpp"
 #include "./include/QuickSort.hpp"
-
 int main() {
-    QuickSort<int> sorter;
-
+    BubbleSort<int, DisplayNum<int>> sorter;
     std::vector<int> data = {10, 7, 8, 9, 1, 5, 2, 6, 3, 4};
     sorter.setData(data);
 
