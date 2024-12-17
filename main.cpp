@@ -10,6 +10,7 @@ int main() {
     std::cout << "Original Array: ";
     sorter.display();
 
+    system("pause");
     std::cout << "Sorting with Optimized QuickSort...\n";
     sorter.executeSort(200, true);  // 200ms 延时显示排序过程
 

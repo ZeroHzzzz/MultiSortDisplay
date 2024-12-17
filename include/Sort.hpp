@@ -1,8 +1,9 @@
 #ifndef SORT_HPP
 #define SORT_HPP
 
-#include <algorithm>
 #include <chrono>
+#include <cstdlib>
+#include <functional>
 #include <iostream>
 #include <numeric>  // for memory usage calculation
 #include <thread>
@@ -22,12 +23,46 @@ enum class SortOrder {
     DESCENDING  // 递减排序
 };
 
+// 定义显示方式接口
+template <typename T>
+struct Display {
+    virtual void operator()(const std::vector<T>& arr) const = 0;
+    virtual ~Display() = default;
+};
+
+// 图形化显示
+template <typename T>
+struct DisplayPic : public Display<T> {
+    void operator()(const std::vector<T>& arr) const override {
+        system(CLEAR_SCREEN);
+        for (const auto& val : arr) {
+            for (int i = 0; i < val; ++i) {
+                std::cout << "#";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << std::string(20, '-') << std::endl;  // 分隔线
+    }
+};
+
+// 显示数字
+template <typename T>
+struct DisplayNum : public Display<T> {
+    void operator()(const std::vector<T>& arr) const override {
+        for (const auto& val : arr) {
+            std::cout << val << " ";
+        }
+        std::cout << std::endl;
+    }
+};
+
 /**
  * @brief 排序算法的基类，提供排序过程中的通用功能和指标统计
  *
  * @tparam T 数据类型
  */
-template <typename T>
+template <typename T,
+          typename DisplayType = DisplayPic<T>>  // 改变可视化方式改这里就行
 class Sort {
    protected:
     std::vector<T> arr;                          // 存储待排序数组
@@ -39,6 +74,7 @@ class Sort {
     size_t maxRecursionDepth = 0;                // 最大递归深度
     std::chrono::duration<double> runTime;       // 排序运行时间
     SortOrder sortOrder = SortOrder::ASCENDING;  // 排序方向，默认为递增
+    DisplayType display_;
 
     // 重置所有指标
     void resetMetrics() {
@@ -88,34 +124,9 @@ class Sort {
     void setSortOrder(SortOrder order) { sortOrder = order; }
 
     /**
-     * @brief 显示当前数组内容
+     * @brief 可视化
      */
-    virtual void display() const {
-        for (const auto& val : arr) {
-            std::cout << val << " ";
-        }
-        std::cout << std::endl;
-    }
-
-    /**
-     * @brief 绘图函数：控制台输出数组状态，清除屏幕后重新绘制
-     *
-     * @param scale 缩放比例
-     */
-    virtual void draw(int scale = 1) const {
-        system(CLEAR_SCREEN);  // 清除屏幕
-
-        T maxElement =
-            *std::max_element(arr.begin(), arr.end());  // 获取数组最大值
-        for (const auto& val : arr) {
-            int height = val * scale / maxElement;  // 根据最大值缩放高度
-            for (int i = 0; i < height; ++i) {
-                std::cout << "#";
-            }
-            std::cout << std::endl;
-        }
-        std::cout << std::string(20, '-') << std::endl;  // 分隔线
-    }
+    virtual void display() const { display_(arr); }
 
     // 执行排序
     void executeSort(int speed = 0, bool gui = false) {
@@ -131,6 +142,7 @@ class Sort {
         std::cout << "Sorted Array: ";
         display();
         displayMetrics();
+        system("pause");
     }
 
     // 输出排序指标

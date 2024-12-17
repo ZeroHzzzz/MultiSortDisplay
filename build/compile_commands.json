@@ -1,8 +1,0 @@
-[
-{
-  "directory": "C:/Users/ZeroHzzzz/Desktop/TimSort/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE  @CMakeFiles/myapp.dir/includes_CXX.rsp -g -std=gnu++11 -o CMakeFiles\\myapp.dir\\main.cpp.obj -c C:\\Users\\ZeroHzzzz\\Desktop\\TimSort\\main.cpp",
-  "file": "C:/Users/ZeroHzzzz/Desktop/TimSort/main.cpp",
-  "output": "CMakeFiles/myapp.dir/main.cpp.obj"
-}
-]
