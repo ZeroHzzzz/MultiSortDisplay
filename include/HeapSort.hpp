@@ -17,9 +17,8 @@ class HeapSort : public Sort<T, DisplayType> {
      * @param arr 待排序的数组
      * @param n 数组大小
      * @param i 当前节点的索引
-     * @param speed 排序过程中的动画速度（延时）
      */
-    void heapify(std::vector<T>& arr, size_t n, size_t i, int speed) {
+    void heapify(std::vector<T>& arr, size_t n, size_t i) {
         size_t largest = i;        // 当前节点
         size_t left = 2 * i + 1;   // 左子节点
         size_t right = 2 * i + 2;  // 右子节点
@@ -41,31 +40,28 @@ class HeapSort : public Sort<T, DisplayType> {
             this->loopIterations++;            // 增加循环次数
 
             // 每次堆调整后，显示当前状态
-            if (speed > 0) {
+            if (this->SPEED > 0 && this->GUI) {
                 this->display();
-                this->delay(speed);  // 使用传入的 speed 参数控制延时
+                this->delay();
             }
 
             // 递归调整被交换的子堆
-            heapify(arr, n, largest, speed);
+            heapify(arr, n, largest);
         }
     }
 
    public:
     /**
      * @brief 执行堆排序
-     *
-     * @param speed 排序过程中的动画速度（延时）
-     * @param gui 是否启用图形化输出
      */
-    void sort(int speed = 0, bool gui = false) override {
+    void sort() override {
         size_t n = this->arr.size();
         if (n <= 1)
             return;
 
         // 构建最大堆
         for (size_t i = n / 2; i-- > 0;) {  // 从最后一个非叶子节点开始
-            heapify(this->arr, n, i, speed);
+            heapify(this->arr, n, i);
         }
 
         // 从堆顶取出最大元素，交换到数组末尾，并调整堆
@@ -75,7 +71,7 @@ class HeapSort : public Sort<T, DisplayType> {
             this->swaps++;  // 增加交换次数
 
             // 调整堆，恢复堆性质
-            heapify(this->arr, i, 0, speed);  // i 是堆的大小
+            heapify(this->arr, i, 0);  // i 是堆的大小
         }
     }
 };

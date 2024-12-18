@@ -10,17 +10,17 @@
 #include <vector>
 
 #ifdef _WIN32
-#define CLEAR_SCREEN "cls"  // Windows 清屏命令
+#define CLEAR_SCREEN "cls"  // Windows
 #else
-#define CLEAR_SCREEN "clear"  // Linux/Unix 清屏命令
+#define CLEAR_SCREEN "clear"  // Linux/Unix
 #endif
 
 /**
  * @brief 排序方向枚举
  */
 enum class SortOrder {
-    ASCENDING,  // 递增排序
-    DESCENDING  // 递减排序
+    ASCENDING,  // 递增
+    DESCENDING  // 递减
 };
 
 // 定义显示方式接口
@@ -75,6 +75,8 @@ class Sort {
     std::chrono::duration<double> runTime;       // 排序运行时间
     SortOrder sortOrder = SortOrder::ASCENDING;  // 排序方向，默认为递增
     DisplayType display_;
+    bool GUI = false;
+    size_t SPEED = 0;
 
     // 重置所有指标
     void resetMetrics() {
@@ -92,8 +94,8 @@ class Sort {
     }
 
     // 延时函数
-    void delay(int milliseconds) const {
-        std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
+    void delay() const {
+        std::this_thread::sleep_for(std::chrono::milliseconds(SPEED));
     }
 
     // 计算数组占用的内存
@@ -101,7 +103,7 @@ class Sort {
         size_t arrayMemory = arr.capacity() * sizeof(T);  // 数组分配的内存
         size_t vectorMetadata = sizeof(std::vector<T>);   // vector 的元数据内存
         size_t stackMemory =
-            maxRecursionDepth * 64;  // 递归栈内存（假设每层栈帧为64字节）
+            maxRecursionDepth * 64;  // 递归栈内存，以每层栈帧64字节算
         return arrayMemory + vectorMetadata + stackMemory;
     }
 
@@ -130,11 +132,13 @@ class Sort {
 
     // 执行排序
     void executeSort(int speed = 0, bool gui = false) {
+        GUI = gui;
+        SPEED = speed;
         resetMetrics();
         auto start = std::chrono::high_resolution_clock::now();
 
         functionCalls++;
-        sort(speed, gui);
+        sort();
 
         auto end = std::chrono::high_resolution_clock::now();
         runTime = end - start;
@@ -159,11 +163,8 @@ class Sort {
 
     /**
      * @brief 纯虚函数，子类需要实现具体的排序逻辑
-     *
-     * @param speed 延时速度（控制排序过程的动画速度）
-     * @param gui 是否启用图形化输出
      */
-    virtual void sort(int speed = 0, bool gui = false) = 0;
+    virtual void sort() = 0;
 
     virtual ~Sort() = default;
 };

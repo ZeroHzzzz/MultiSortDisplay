@@ -12,10 +12,8 @@ class QuickSort : public Sort<T, DisplayType> {
      *
      * @param low 子数组的起始索引
      * @param high 子数组的结束索引
-     * @param speed 延时速度
-     * @param gui 是否启用图形化
      */
-    void insertionSort(int low, int high, int speed, bool gui) {
+    void insertionSort(int low, int high) {
         for (int i = low + 1; i <= high; ++i) {
             T key = this->arr[i];
             int j = i - 1;
@@ -28,9 +26,9 @@ class QuickSort : public Sort<T, DisplayType> {
             }
             this->arr[j + 1] = key;
 
-            if (gui) {
-                this->delay(speed);
+            if (this->SPEED > 0 && this->GUI) {
                 this->display();
+                this->delay();
             }
         }
     }
@@ -56,11 +54,9 @@ class QuickSort : public Sort<T, DisplayType> {
      *
      * @param low 子数组的起始索引
      * @param high 子数组的结束索引
-     * @param speed 延时速度
-     * @param gui 是否启用图形化
      * @return int 返回枢轴的最终位置
      */
-    int partition(int low, int high, int speed, bool gui) {
+    int partition(int low, int high) {
         T pivot = this->arr[high];  // 选择最后一个元素作为枢轴
         int i = low - 1;
 
@@ -72,18 +68,18 @@ class QuickSort : public Sort<T, DisplayType> {
                 ++i;
                 this->swap(this->arr[i], this->arr[j]);
 
-                if (gui) {
-                    this->delay(speed);
+                if (this->SPEED > 0 && this->GUI) {
                     this->display();
+                    this->delay();
                 }
             }
         }
 
         this->swap(this->arr[i + 1], this->arr[high]);
 
-        if (gui) {
-            this->delay(speed);
+        if (this->SPEED > 0 && this->GUI) {
             this->display();
+            this->delay();
         }
 
         return i + 1;
@@ -95,21 +91,19 @@ class QuickSort : public Sort<T, DisplayType> {
      * @param low 子数组的起始索引
      * @param high 子数组的结束索引
      * @param depth 当前递归深度
-     * @param speed 延时速度
-     * @param gui 是否启用图形化
      */
-    void optimizedQuickSort(int low, int high, int depth, int speed, bool gui) {
+    void optimizedQuickSort(int low, int high, int depth) {
         while (low < high) {
             this->functionCalls++;
 
             // 小数组切换为插入排序
             if (high - low + 1 <= 10) {
-                insertionSort(low, high, speed, gui);
+                insertionSort(low, high);
                 break;
             }
 
             // 分区操作
-            int pivotIndex = partition(low, high, speed, gui);
+            int pivotIndex = partition(low, high);
 
             // 更新最大递归深度
             if (depth > this->maxRecursionDepth) {
@@ -118,10 +112,10 @@ class QuickSort : public Sort<T, DisplayType> {
 
             // 尾递归优化
             if (pivotIndex - low < high - pivotIndex) {
-                optimizedQuickSort(low, pivotIndex - 1, depth + 1, speed, gui);
+                optimizedQuickSort(low, pivotIndex - 1, depth + 1);
                 low = pivotIndex + 1;
             } else {
-                optimizedQuickSort(pivotIndex + 1, high, depth + 1, speed, gui);
+                optimizedQuickSort(pivotIndex + 1, high, depth + 1);
                 high = pivotIndex - 1;
             }
         }
@@ -130,15 +124,12 @@ class QuickSort : public Sort<T, DisplayType> {
    public:
     /**
      * @brief 执行快速排序
-     *
-     * @param speed 延时速度（用于可视化）
-     * @param gui 是否启用图形化
      */
-    void sort(int speed = 0, bool gui = false) override {
+    void sort() override {
         this->functionCalls = 0;
         this->maxRecursionDepth = 0;
 
-        optimizedQuickSort(0, this->arr.size() - 1, 1, speed, gui);
+        optimizedQuickSort(0, this->arr.size() - 1, 1);
     }
 };
 

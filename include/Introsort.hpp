@@ -21,16 +21,16 @@ class IntroSort : public Sort<T, DisplayType> {
      * @param high 排序的结束位置
      * @param depthLimit 最大递归深度
      */
-    void quickSort(size_t low, size_t high, size_t depthLimit, int speed) {
+    void quickSort(size_t low, size_t high, size_t depthLimit) {
         if (low < high) {
             if (depthLimit == 0) {
-                heapSort(low, high, speed);  // 如果递归深度超过阈值，使用堆排序
+                heapSort(low, high);  // 如果递归深度超过阈值，使用堆排序
             } else {
                 size_t pivotIndex = partition(low, high);
                 // 排序后显示当前状态
-                if (speed > 0) {
+                if (this->SPEED > 0 && this->GUI) {
                     this->display();
-                    this->delay(speed);
+                    this->delay();
                 }
 
                 // 增加递归调用次数
@@ -39,10 +39,8 @@ class IntroSort : public Sort<T, DisplayType> {
                 this->maxRecursionDepth =
                     std::max(this->maxRecursionDepth, this->recursionDepth);
 
-                quickSort(low, pivotIndex - 1, depthLimit - 1,
-                          speed);  // 递归左边
-                quickSort(pivotIndex + 1, high, depthLimit - 1,
-                          speed);  // 递归右边
+                quickSort(low, pivotIndex - 1, depthLimit - 1);   // 递归左边
+                quickSort(pivotIndex + 1, high, depthLimit - 1);  // 递归右边
 
                 // 完成当前层的递归后，递归深度回退
                 this->recursionDepth--;
@@ -78,19 +76,19 @@ class IntroSort : public Sort<T, DisplayType> {
      * @param low 排序的起始位置
      * @param high 排序的结束位置
      */
-    void heapSort(size_t low, size_t high, int speed) {
+    void heapSort(size_t low, size_t high) {
         buildMaxHeap(low, high);
         // 每次交换后显示
-        if (speed > 0) {
+        if (this->SPEED > 0 && this->GUI) {
             this->display();
-            this->delay(speed);
+            this->delay();
         }
         for (size_t i = high; i > low; --i) {
             this->swap(this->arr[low], this->arr[i]);
             heapify(low, high, low);
-            if (speed > 0) {
+            if (this->SPEED > 0 && this->GUI) {
                 this->display();
-                this->delay(speed);
+                this->delay();
             }
         }
     }
@@ -136,7 +134,7 @@ class IntroSort : public Sort<T, DisplayType> {
      * @param low 排序的起始位置
      * @param high 排序的结束位置
      */
-    void insertionSort(size_t low, size_t high, int speed) {
+    void insertionSort(size_t low, size_t high) {
         for (size_t i = low + 1; i <= high; ++i) {
             T key = this->arr[i];
             size_t j = i;
@@ -147,9 +145,9 @@ class IntroSort : public Sort<T, DisplayType> {
             }
             this->arr[j] = key;
             // 每次插入后显示
-            if (speed > 0) {
+            if (this->SPEED > 0 && this->GUI) {
                 this->display();
-                this->delay(speed);
+                this->delay();
             }
             this->loopIterations++;  // 每次插入操作增加循环计数
         }
@@ -158,11 +156,8 @@ class IntroSort : public Sort<T, DisplayType> {
    public:
     /**
      * @brief 执行内省排序
-     *
-     * @param speed 排序过程中的动画速度（延时）
-     * @param gui 是否启用图形化输出
      */
-    void sort(int speed = 0, bool gui = false) override {
+    void sort() override {
         size_t n = this->arr.size();
         if (n <= 1)
             return;
@@ -172,15 +167,15 @@ class IntroSort : public Sort<T, DisplayType> {
 
         // 使用快速排序，并限制递归深度
         this->functionCalls++;  // 快速排序开始前，增加函数调用次数
-        quickSort(0, n - 1, depthLimit, speed);
+        quickSort(0, n - 1, depthLimit);
 
         // 使用插入排序对小规模子数组进行排序
-        insertionSort(0, n - 1, speed);
+        insertionSort(0, n - 1);
 
         // 排序过程中的显示
-        if (speed > 0) {
+        if (this->SPEED > 0 && this->GUI) {
             this->display();
-            this->delay(speed);  // 使用传入的 speed 参数控制延时
+            this->delay();
         }
     }
 };

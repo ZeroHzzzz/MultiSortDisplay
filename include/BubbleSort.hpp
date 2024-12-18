@@ -4,54 +4,52 @@
 #include "Sort.hpp"
 
 /**
- * @brief Ã°ÅİÅÅĞòÀà£¬¼Ì³Ğ×Ô Sort »ùÀà
- * @tparam T Êı¾İÀàĞÍ
- * @tparam DisplayType ¿ÉÊÓ»¯ÀàĞÍ
+ * @brief å†’æ³¡æ’åºç±»ï¼Œç»§æ‰¿è‡ª Sort åŸºç±»
+ * @tparam T æ•°æ®ç±»å‹
+ * @tparam DisplayType å¯è§†åŒ–ç±»å‹
  */
 template <typename T, typename DisplayType = DisplayPic<T>>
 class BubbleSort : public Sort<T, DisplayType> {
    public:
     /**
-     * @brief ÊµÏÖÃ°ÅİÅÅĞòµÄÅÅĞòËã·¨
+     * @brief å®ç°å†’æ³¡æ’åºçš„æ’åºç®—æ³•
      *
-     * @param speed ÅÅĞò¹ı³ÌÖĞµÄ¶¯»­ËÙ¶È£¨ÑÓÊ±£©
-     * @param gui ÊÇ·ñÆôÓÃÍ¼ĞÎ»¯Êä³ö
      */
-    void sort(int speed = 0, bool gui = false) override {
+    void sort() override {
         size_t n = this->arr.size();
         bool swapped;
 
-        // ÍâÑ­»·¿ØÖÆÅÅĞòÂÖÊı
+        // å¤–å¾ªç¯æ§åˆ¶æ’åºè½®æ•°
         for (size_t i = 0; i < n - 1; ++i) {
             swapped = false;
 
-            // ÄÚÑ­»·½øĞĞÏàÁÚÔªËØ±È½ÏºÍ½»»»
+            // å†…å¾ªç¯è¿›è¡Œç›¸é‚»å…ƒç´ æ¯”è¾ƒå’Œäº¤æ¢
             for (size_t j = 0; j < n - i - 1; ++j) {
-                this->comparisons++;  // ±È½Ï´ÎÊıÔö¼Ó
+                this->comparisons++;  // æ¯”è¾ƒæ¬¡æ•°å¢åŠ 
 
-                // ¸ù¾İÅÅĞò·½Ïò½øĞĞÅĞ¶Ï
+                // æ ¹æ®æ’åºæ–¹å‘è¿›è¡Œåˆ¤æ–­
                 bool condition = (this->sortOrder == SortOrder::ASCENDING)
                                      ? (this->arr[j] > this->arr[j + 1])
                                      : (this->arr[j] < this->arr[j + 1]);
 
-                // ½»»»ÔªËØ
+                // äº¤æ¢å…ƒç´ 
                 if (condition) {
                     std::swap(this->arr[j],
-                              this->arr[j + 1]);  // Ê¹ÓÃstd::swap½øĞĞ½»»»
+                              this->arr[j + 1]);  // ä½¿ç”¨std::swapè¿›è¡Œäº¤æ¢
                     swapped = true;
-                    this->swaps++;  // ½»»»´ÎÊıÔö¼Ó
+                    this->swaps++;  // äº¤æ¢æ¬¡æ•°å¢åŠ 
                 }
 
-                this->loopIterations++;  // Ñ­»·µü´ú´ÎÊıÔö¼Ó
+                this->loopIterations++;  // å¾ªç¯è¿­ä»£æ¬¡æ•°å¢åŠ 
 
-                // ÏÔÊ¾µ±Ç°×´Ì¬
-                if (gui) {
+                // æ˜¾ç¤ºå½“å‰çŠ¶æ€
+                if (this->SPEED > 0 && this->GUI) {
                     this->display();
-                    this->delay(speed);
+                    this->delay();
                 }
             }
 
-            // Èç¹ûÒ»ÂÖÅÅĞòÃ»ÓĞ·¢Éú½»»»£¬ÔòËµÃ÷Êı×éÒÑ¾­ÅÅĞòºÃÁË£¬ÌáÇ°½áÊø
+            // å¦‚æœä¸€è½®æ’åºæ²¡æœ‰å‘ç”Ÿäº¤æ¢ï¼Œåˆ™è¯´æ˜æ•°ç»„å·²ç»æ’åºå¥½äº†ï¼Œæå‰ç»“æŸ
             if (!swapped) {
                 break;
             }

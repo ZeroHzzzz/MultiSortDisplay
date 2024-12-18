@@ -18,13 +18,8 @@ class MergeSort : public Sort<T, DisplayType> {
      * @param left 左子数组的起始位置
      * @param mid 中间位置（左子数组的末尾）
      * @param right 右子数组的末尾位置
-     * @param speed 排序过程中的动画速度（延时）
      */
-    void merge(std::vector<T>& arr,
-               size_t left,
-               size_t mid,
-               size_t right,
-               int speed) {
+    void merge(std::vector<T>& arr, size_t left, size_t mid, size_t right) {
         size_t n1 = mid - left + 1;  // 左子数组的长度
         size_t n2 = right - mid;     // 右子数组的长度
 
@@ -55,9 +50,9 @@ class MergeSort : public Sort<T, DisplayType> {
             this->loopIterations++;  // 增加循环次数
 
             // 每 50 次循环显示一次当前状态（可以调整为更高频次）
-            if (this->loopIterations % 50 == 0 && speed > 0) {
-                this->display();     // 显示当前排序状态
-                this->delay(speed);  // 使用传入的 speed 参数控制延时
+            if (this->SPEED > 0 && this->GUI) {
+                this->display();  // 显示当前排序状态
+                this->delay();
             }
         }
 
@@ -72,9 +67,9 @@ class MergeSort : public Sort<T, DisplayType> {
         this->swaps++;  // 合并过程中的交换
 
         // 合并后显示当前状态
-        if (speed > 0) {
+        if (this->SPEED > 0 && this->GUI) {
             this->display();
-            this->delay(speed);  // 使用传入的 speed 参数控制延时
+            this->delay();
         }
     }
 
@@ -84,30 +79,26 @@ class MergeSort : public Sort<T, DisplayType> {
      * @param arr 待排序的数组
      * @param left 左子数组的起始位置
      * @param right 右子数组的末尾位置
-     * @param speed 排序过程中的动画速度（延时）
      */
-    void mergeSort(std::vector<T>& arr, size_t left, size_t right, int speed) {
+    void mergeSort(std::vector<T>& arr, size_t left, size_t right) {
         if (left < right) {
             size_t mid = left + (right - left) / 2;
 
             // 递归排序左半部分
-            mergeSort(arr, left, mid, speed);
+            mergeSort(arr, left, mid);
             // 递归排序右半部分
-            mergeSort(arr, mid + 1, right, speed);
+            mergeSort(arr, mid + 1, right);
 
             // 合并两个已排序的部分
-            merge(arr, left, mid, right, speed);
+            merge(arr, left, mid, right);
         }
     }
 
    public:
     /**
      * @brief 实现归并排序的排序算法
-     *
-     * @param speed 排序过程中的动画速度（延时）
-     * @param gui 是否启用图形化输出
      */
-    void sort(int speed = 0, bool gui = false) override {
+    void sort() override {
         this->comparisons = 0;
         this->swaps = 0;
         this->loopIterations = 0;
@@ -117,7 +108,7 @@ class MergeSort : public Sort<T, DisplayType> {
             return;
 
         // 执行归并排序
-        mergeSort(this->arr, 0, n - 1, speed);
+        mergeSort(this->arr, 0, n - 1);
     }
 };
 

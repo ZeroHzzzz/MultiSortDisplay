@@ -39,11 +39,8 @@ class InsertionSort : public Sort<T, DisplayType> {
    public:
     /**
      * @brief 执行插入排序
-     *
-     * @param speed 排序过程中的动画速度（延时）
-     * @param gui 是否启用图形化输出
      */
-    void sort(int speed = 0, bool gui = false) override {
+    void sort() override {
         size_t n = this->arr.size();
         if (n <= 1)
             return;
@@ -71,9 +68,9 @@ class InsertionSort : public Sort<T, DisplayType> {
             this->arr[pos] = key;
 
             // 每一次插入后显示当前状态
-            if (speed > 0) {
+            if (this->SPEED > 0 && this->GUI) {
                 this->display();
-                this->delay(speed);  // 使用传入的 speed 参数控制延时
+                this->delay();
             }
         }
     }

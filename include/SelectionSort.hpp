@@ -13,11 +13,8 @@ class SelectionSort : public Sort<T, DisplayType> {
    public:
     /**
      * @brief 执行选择排序
-     *
-     * @param speed 排序过程中的动画速度（延时）
-     * @param gui 是否启用图形化输出
      */
-    void sort(int speed = 0, bool gui = false) override {
+    void sort() override {
         size_t n = this->arr.size();
         if (n <= 1)
             return;
@@ -40,9 +37,9 @@ class SelectionSort : public Sort<T, DisplayType> {
             }
 
             // 每次完成一轮选择排序后显示当前状态
-            if (speed > 0) {
+            if (this->SPEED > 0 && this->GUI) {
                 this->display();
-                this->delay(speed);  // 使用传入的 speed 参数控制延时
+                this->delay();
             }
         }
     }
