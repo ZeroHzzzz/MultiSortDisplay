@@ -13,7 +13,11 @@ FetchContent_Declare(ftxui
 )
 FetchContent_MakeAvailable(ftxui)
 
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB SOURCES   src/*.cpp
+                    src/sortAlgorithm/*.cpp
+                    src/windows/*.cpp
+                    src/common/*.cpp
+)
 
 add_executable(MultiSort ${SOURCES})
 
