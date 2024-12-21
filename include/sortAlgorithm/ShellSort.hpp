@@ -17,7 +17,45 @@ class ShellSort : public Sort<T> {
     void sort() override;
     ShellSort(std::vector<T>& input,
               ftxui::ScreenInteractive& screen,
-              size_t speed = 1000);
+              size_t speed = 1000,
+              bool GUI = true)
+        : Sort<T>(input, screen, speed, GUI) {};
 };
+
+template <typename T>
+void ShellSort<T>::sort() {
+    size_t n = this->arr.size();
+    if (n <= 1)
+        return;
+
+    // 经典的希尔排序增量序列（n / 2, n / 4, ..., 1）
+    size_t gap = n / 2;
+
+    // 从较大的增量开始，逐步减小增量，直到 1
+    while (gap > 0) {
+        // 对每个增量执行插入排序
+        for (size_t i = gap; i < n; ++i) {
+            T key = this->arr[i];
+            size_t j = i;
+
+            // 按增量间隔进行插入排序
+            while (j >= gap && this->arr[j - gap] > key) {
+                this->arr[j] = this->arr[j - gap];
+                j -= gap;
+                this->swaps++;           // 交换次数
+                this->loopIterations++;  // 循环次数
+            }
+            this->arr[j] = key;
+        }
+
+        // 每次完成一轮增量排序后显示当前状态
+        if (this->GUI) {
+            this->screen.PostEvent(ftxui::Event::Custom);
+            std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
+        }
+
+        gap /= 2;  // 减小增量
+    }
+}
 
 #endif

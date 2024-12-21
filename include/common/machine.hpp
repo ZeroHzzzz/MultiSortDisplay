@@ -11,11 +11,11 @@
 class Machine {
    public:
     std::vector<int> sort_array;  // Use to store the array to be sorted
-    std::map<std::string, int> speed = {{"0.5x", 500},
+    std::map<std::string, int> speed = {{"0.5x", 2000},
                                         {"1x", 1000},
-                                        {"1.5x", 1500},
-                                        {"2x", 2000},
-                                        {"4x", 4000}};
+                                        {"1.5x", 750},
+                                        {"2x", 500},
+                                        {"4x", 250}};
 
     void AutoTest();
     void ManualTest(ftxui::ScreenInteractive& screen);

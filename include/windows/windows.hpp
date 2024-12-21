@@ -48,23 +48,6 @@ class Windows {
      * @brief 显示主界面
      */
     void Show();
-
-    /**
-     * @brief 刷新界面以更新显示
-     */
-    void refresh();
-
-    /**
-     * @brief 更新数据并重新渲染界面
-     *
-     * @param update_vector 新的数组数据
-     */
-    void update(std::vector<int>& update_vector);
-
-    /**
-     * @brief 运行窗口主逻辑
-     */
-    void Run();
 };
 
 #endif

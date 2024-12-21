@@ -40,8 +40,11 @@ class Sort {
     bool GUI = false;
     size_t SPEED = 0;
 
-    Sort(std::vector<T>& input, ftxui::ScreenInteractive& screen, size_t speed)
-        : arr(input), screen(screen), SPEED(speed) {};
+    Sort(std::vector<T>& input,
+         ftxui::ScreenInteractive& screen,
+         size_t speed,
+         bool GUI)
+        : arr(input), screen(screen), SPEED(speed), GUI(GUI) {};
     void resetMetrics();                  // 重置所有指标
     void swap(T& a, T& b);                // 交换元素
     size_t calculateMemoryUsage() const;  // 计算数组占用的内存
