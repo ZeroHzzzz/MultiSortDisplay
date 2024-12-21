@@ -32,8 +32,8 @@ void BubbleSort<T>::sort() {
 
             // 显示当前状态
             if (this->SPEED > 0 && this->GUI && win.mode_selection) {
-                win.update(this->arr);
                 this->delay();
+                win.update(this->arr);
             }
         }
 

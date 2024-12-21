@@ -1,11 +1,11 @@
 #ifndef SORT_HPP
 #define SORT_HPP
 
+#include <unistd.h>
 #include <chrono>
 #include <iostream>
 #include <thread>
 #include <vector>
-
 /**
  * @brief 排序方向枚举
  */
@@ -66,7 +66,8 @@ void Sort<T>::swap(T& a, T& b) {
 
 template <typename T>
 void Sort<T>::delay() const {
-    std::this_thread::sleep_for(std::chrono::milliseconds(SPEED));
+    sleep(1);
+    // std::this_thread::sleep_for(std::chrono::milliseconds(SPEED));
 }
 
 template <typename T>
@@ -98,26 +99,24 @@ void Sort<T>::executeSort(int speed, bool gui) {
 
     functionCalls++;
     sort();
-
     auto end = std::chrono::high_resolution_clock::now();
     runTime = end - start;
 
-    std::cout << "Sorted Array: ";
     // display();  // 可添加显示逻辑
     displayMetrics();
-    system("pause");
+    // system("pause");
 }
 
 template <typename T>
 void Sort<T>::displayMetrics() const {
-    std::cout << "Sorting Metrics:\n";
-    std::cout << "  Comparisons: " << comparisons << "\n";
-    std::cout << "  Swaps: " << swaps << "\n";
-    std::cout << "  Function Calls: " << functionCalls << "\n";
-    std::cout << "  Loop Iterations: " << loopIterations << "\n";
-    std::cout << "  Max Recursion Depth: " << maxRecursionDepth << "\n";
-    std::cout << "  Memory Usage: " << calculateMemoryUsage() << " bytes\n";
-    std::cout << "  Run Time: " << runTime.count() << " seconds\n";
+    // std::cout << "Sorting Metrics:\n";
+    // std::cout << "  Comparisons: " << comparisons << "\n";
+    // std::cout << "  Swaps: " << swaps << "\n";
+    // std::cout << "  Function Calls: " << functionCalls << "\n";
+    // std::cout << "  Loop Iterations: " << loopIterations << "\n";
+    // std::cout << "  Max Recursion Depth: " << maxRecursionDepth << "\n";
+    // std::cout << "  Memory Usage: " << calculateMemoryUsage() << " bytes\n";
+    // std::cout << "  Run Time: " << runTime.count() << " seconds\n";
 }
 
 #endif
