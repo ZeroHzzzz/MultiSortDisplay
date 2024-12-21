@@ -34,9 +34,9 @@ void MergeSort<T>::merge(std::vector<T>& arr,
         }
         this->loopIterations++;  // 增加循环次数
 
-        if (this->SPEED > 0 && this->GUI && win.mode_selection) {
-            win.update(this->arr);
-            this->delay();
+        if (win.mode_selection && win.graphics_selection) {
+            this->screen.PostEvent(ftxui::Event::Custom);
+            std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
         }
     }
 
@@ -49,9 +49,9 @@ void MergeSort<T>::merge(std::vector<T>& arr,
 
     this->swaps++;  // 合并过程中的交换
 
-    if (this->SPEED > 0 && this->GUI && win.mode_selection) {
-        win.update(this->arr);
-        this->delay();
+    if (win.mode_selection && win.graphics_selection) {
+        this->screen.PostEvent(ftxui::Event::Custom);
+        std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
     }
 }
 

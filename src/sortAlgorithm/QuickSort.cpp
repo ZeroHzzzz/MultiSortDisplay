@@ -16,9 +16,9 @@ void QuickSort<T>::insertionSort(int low, int high) {
         }
         this->arr[j + 1] = key;
 
-        if (this->SPEED > 0 && this->GUI && win.mode_selection) {
-            win.update(this->arr);
-            this->delay();
+        if (win.mode_selection && win.graphics_selection) {
+            this->screen.PostEvent(ftxui::Event::Custom);
+            std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
         }
     }
 }
@@ -45,18 +45,19 @@ int QuickSort<T>::partition(int low, int high) {
             ++i;
             this->swap(this->arr[i], this->arr[j]);
 
-            if (this->SPEED > 0 && this->GUI && win.mode_selection) {
-                win.update(this->arr);
-                this->delay();
+            if (win.mode_selection && win.graphics_selection) {
+                this->screen.PostEvent(ftxui::Event::Custom);
+                std::this_thread::sleep_for(
+                    std::chrono::milliseconds(this->SPEED));
             }
         }
     }
 
     this->swap(this->arr[i + 1], this->arr[high]);
 
-    if (this->SPEED > 0 && this->GUI && win.mode_selection) {
-        win.update(this->arr);
-        this->delay();
+    if (win.mode_selection && win.graphics_selection) {
+        this->screen.PostEvent(ftxui::Event::Custom);
+        std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
     }
 
     return i + 1;

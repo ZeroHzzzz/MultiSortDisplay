@@ -2,7 +2,12 @@
 #define SORT_HPP
 
 #include <unistd.h>
+#include <atomic>
 #include <chrono>
+#include <ftxui/component/component.hpp>
+#include <ftxui/component/component_base.hpp>
+#include <ftxui/component/screen_interactive.hpp>
+#include <ftxui/dom/elements.hpp>
 #include <iostream>
 #include <thread>
 #include <vector>
@@ -21,8 +26,8 @@ enum class SortOrder {
  */
 template <typename T>
 class Sort {
-   protected:
-    std::vector<T> arr;                          // 存储待排序数组
+   public:
+    std::vector<T>& arr;                         // 存储待排序数组
     size_t comparisons = 0;                      // 比较操作的次数
     size_t swaps = 0;                            // 交换操作的次数
     size_t functionCalls = 0;                    // 递归函数调用的次数
@@ -31,17 +36,18 @@ class Sort {
     size_t maxRecursionDepth = 0;                // 最大递归深度
     std::chrono::duration<double> runTime;       // 排序运行时间
     SortOrder sortOrder = SortOrder::ASCENDING;  // 排序方向，默认为递增
+    ftxui::ScreenInteractive& screen;
     bool GUI = false;
     size_t SPEED = 0;
 
+    Sort(std::vector<T>& input, ftxui::ScreenInteractive& screen, size_t speed)
+        : arr(input), screen(screen), SPEED(speed) {};
     void resetMetrics();                  // 重置所有指标
     void swap(T& a, T& b);                // 交换元素
-    void delay() const;                   // 延时函数
     size_t calculateMemoryUsage() const;  // 计算数组占用的内存
 
-   public:
-    void setData(const std::vector<T>& input);  // 设置待排序的数据
-    void setSortOrder(SortOrder order);         // 设置排序方向
+    // void setData(const std::vector<T>& input);  // 设置待排序的数据
+    void setSortOrder(SortOrder order);                 // 设置排序方向
     void executeSort(int speed = 0, bool gui = false);  // 执行排序
     void displayMetrics() const;                        // 输出排序指标
 
@@ -49,6 +55,7 @@ class Sort {
 
     virtual ~Sort() = default;
 };
+
 template <typename T>
 void Sort<T>::resetMetrics() {
     comparisons = swaps = functionCalls = loopIterations = 0;
@@ -65,12 +72,6 @@ void Sort<T>::swap(T& a, T& b) {
 }
 
 template <typename T>
-void Sort<T>::delay() const {
-    sleep(1);
-    // std::this_thread::sleep_for(std::chrono::milliseconds(SPEED));
-}
-
-template <typename T>
 size_t Sort<T>::calculateMemoryUsage() const {
     size_t arrayMemory = arr.capacity() * sizeof(T);  // 数组分配的内存
     size_t vectorMetadata = sizeof(std::vector<T>);  // vector 的元数据内存
@@ -79,11 +80,11 @@ size_t Sort<T>::calculateMemoryUsage() const {
     return arrayMemory + vectorMetadata + stackMemory;
 }
 
-template <typename T>
-void Sort<T>::setData(const std::vector<T>& input) {
-    arr = input;
-    resetMetrics();
-}
+// template <typename T>
+// void Sort<T>::setData(const std::vector<T>& input) {
+//     arr = input;
+//     resetMetrics();
+// }
 
 template <typename T>
 void Sort<T>::setSortOrder(SortOrder order) {
@@ -103,7 +104,7 @@ void Sort<T>::executeSort(int speed, bool gui) {
     runTime = end - start;
 
     // display();  // 可添加显示逻辑
-    displayMetrics();
+    // displayMetrics();
     // system("pause");
 }
 

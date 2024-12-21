@@ -31,6 +31,9 @@ class InsertionSort : public Sort<T> {
      * @brief 执行插入排序
      */
     void sort() override;
+    InsertionSort(std::vector<T>& input,
+                  ftxui::ScreenInteractive& screen,
+                  size_t speed = 1000);
 };
 
 #endif

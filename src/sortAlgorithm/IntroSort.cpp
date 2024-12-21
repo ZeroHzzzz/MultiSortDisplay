@@ -9,9 +9,10 @@ void IntroSort<T>::quickSort(size_t low, size_t high, size_t depthLimit) {
             heapSort(low, high);  // 如果递归深度超过阈值，使用堆排序
         } else {
             size_t pivotIndex = partition(low, high);
-            if (this->SPEED > 0 && this->GUI && win.mode_selection) {
-                win.update(this->arr);
-                this->delay();
+            if (win.mode_selection && win.graphics_selection) {
+                this->screen.PostEvent(ftxui::Event::Custom);
+                std::this_thread::sleep_for(
+                    std::chrono::milliseconds(this->SPEED));
             }
 
             this->functionCalls++;
@@ -46,16 +47,16 @@ size_t IntroSort<T>::partition(size_t low, size_t high) {
 template <typename T>
 void IntroSort<T>::heapSort(size_t low, size_t high) {
     buildMaxHeap(low, high);
-    if (this->SPEED > 0 && this->GUI && win.mode_selection) {
-        win.update(this->arr);
-        this->delay();
+    if (win.mode_selection && win.graphics_selection) {
+        this->screen.PostEvent(ftxui::Event::Custom);
+        std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
     }
     for (size_t i = high; i > low; --i) {
         this->swap(this->arr[low], this->arr[i]);
         heapify(low, i - 1, low);
-        if (this->SPEED > 0 && this->GUI && win.mode_selection) {
-            win.update(this->arr);
-            this->delay();
+        if (win.mode_selection && win.graphics_selection) {
+            this->screen.PostEvent(ftxui::Event::Custom);
+            std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
         }
     }
 }
@@ -96,9 +97,9 @@ void IntroSort<T>::insertionSort(size_t low, size_t high) {
             this->comparisons++;
         }
         this->arr[j] = key;
-        if (this->SPEED > 0 && this->GUI && win.mode_selection) {
-            win.update(this->arr);
-            this->delay();
+        if (win.mode_selection && win.graphics_selection) {
+            this->screen.PostEvent(ftxui::Event::Custom);
+            std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
         }
         this->loopIterations++;
     }
@@ -117,8 +118,8 @@ void IntroSort<T>::sort() {
 
     insertionSort(0, n - 1);
 
-    if (this->SPEED > 0 && this->GUI && win.mode_selection) {
-        win.update(this->arr);
-        this->delay();
+    if (win.mode_selection && win.graphics_selection) {
+        this->screen.PostEvent(ftxui::Event::Custom);
+        std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
     }
 }

@@ -14,6 +14,10 @@ class BubbleSort : public Sort<T> {
     /**
      * @brief 实现冒泡排序的排序算法
      */
+    BubbleSort(std::vector<T>& input,
+               ftxui::ScreenInteractive& screen,
+               size_t speed = 1000)
+        : Sort<T>(input, screen, speed) {};
     void sort() override;
 };
 

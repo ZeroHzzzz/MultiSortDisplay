@@ -1,6 +1,7 @@
 // Windows.cpp
 #include "windows/windows.hpp"
 #include "headfile.hpp"
+
 void Windows::Show() {
     auto algorithm_list_container = Container::Vertical({});
     for (const auto& name : algorithms) {
@@ -59,7 +60,26 @@ void Windows::Show() {
 
     // 底部按钮和设置
     // Run 按钮
-    auto run_button = Button("Run", [&] { Testmachine.ManualTest(); });
+    auto run_button = Button("Run", [&] {
+        // handle input
+        std::stringstream ss(array_input);
+        data.clear();
+        int value;
+        while (ss >> value) {
+            if (value > 0) {  // 过滤负数
+                data.push_back(value);
+            }
+        }
+
+        if (!sort_running.load()) {
+            sort_running.store(true);
+            std::thread sort_thread([&]() {
+                Testmachine.ManualTest(screen);
+                sort_running.store(false);
+            });
+            sort_thread.detach();
+        }
+    });
 
     // Exit 按钮
     auto exit_button = Button("Exit", [&] {
@@ -161,6 +181,9 @@ void Windows::Show() {
 
     // 启动界面
     screen.Loop(main_renderer);
+    if (sort_thread_ptr && sort_thread_ptr->joinable()) {
+        sort_thread_ptr->join();
+    }
 }
 
 void Windows::refresh() {

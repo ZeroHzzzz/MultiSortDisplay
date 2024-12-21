@@ -36,6 +36,9 @@ class MergeSort : public Sort<T> {
      * @brief 实现归并排序的排序算法
      */
     void sort() override;
+    MergeSort(std::vector<T>& input,
+              ftxui::ScreenInteractive& screen,
+              size_t speed = 1000);
 };
 
 #endif

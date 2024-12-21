@@ -26,9 +26,9 @@ void SelectionSort<T>::sort() {
         }
 
         // 每次完成一轮选择排序后显示当前状态
-        if (this->SPEED > 0 && this->GUI && win.mode_selection) {
-            win.update(this->arr);
-            this->delay();
+        if (win.mode_selection && win.graphics_selection) {
+            this->screen.PostEvent(ftxui::Event::Custom);
+            std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
         }
     }
 }

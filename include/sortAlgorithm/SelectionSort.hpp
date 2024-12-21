@@ -11,10 +11,13 @@
 template <typename T>
 class SelectionSort : public Sort<T> {
    public:
-    /**
+        /**
      * @brief 执行选择排序
      */
     void sort() override;
+    SelectionSort(std::vector<T>& input,
+                  ftxui::ScreenInteractive& screen,
+                  size_t speed = 1000);
 };
 
 #endif

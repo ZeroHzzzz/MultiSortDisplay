@@ -34,6 +34,9 @@ class TimSort : public Sort<T> {
    public:
     // 执行 TimSort 排序
     void sort() override;
+    TimSort(std::vector<T>& input,
+            ftxui::ScreenInteractive& screen,
+            size_t speed = 1000);
 };
 
 #endif

@@ -18,10 +18,12 @@ extern SortFactory<int> factory;
 extern Windows win;  // 窗口
 
 template class SortFactory<int>;
+
 // Explicit instantiation for BubbleSort
 template class BubbleSort<int>;
 
 // Explicit instantiation for HeapSort
+// template class HeapSort<int>;
 template class HeapSort<int>;
 
 // Explicit instantiation for InsertionSort

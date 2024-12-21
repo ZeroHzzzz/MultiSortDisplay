@@ -70,6 +70,9 @@ class IntroSort : public Sort<T> {
      * @brief 执行内省排序
      */
     void sort() override;
+    IntroSort(std::vector<T>& input,
+              ftxui::ScreenInteractive& screen,
+              size_t speed = 1000);
 };
 
 #endif

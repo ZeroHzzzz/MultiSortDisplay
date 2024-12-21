@@ -1,6 +1,7 @@
 // HeapSort.cpp
 #include "sortAlgorithm/HeapSort.hpp"
 #include "headfile.hpp"
+
 template <typename T>
 void HeapSort<T>::heapify(std::vector<T>& arr, size_t n, size_t i) {
     size_t largest = i;        // 当前节点
@@ -24,9 +25,9 @@ void HeapSort<T>::heapify(std::vector<T>& arr, size_t n, size_t i) {
         this->loopIterations++;            // 增加循环次数
 
         // 每次堆调整后，显示当前状态
-        if (this->SPEED > 0 && this->GUI && win.mode_selection) {
-            win.update(this->arr);
-            this->delay();
+        if (win.mode_selection && win.graphics_selection) {
+            this->screen.PostEvent(ftxui::Event::Custom);
+            std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
         }
 
         // 递归调整被交换的子堆

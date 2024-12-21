@@ -31,9 +31,10 @@ void BubbleSort<T>::sort() {
             this->loopIterations++;  // 循环迭代次数增加
 
             // 显示当前状态
-            if (this->SPEED > 0 && this->GUI && win.mode_selection) {
-                this->delay();
-                win.update(this->arr);
+            if (win.mode_selection && win.graphics_selection) {
+                this->screen.PostEvent(ftxui::Event::Custom);
+                std::this_thread::sleep_for(
+                    std::chrono::milliseconds(this->SPEED));
             }
         }
 
@@ -42,4 +43,5 @@ void BubbleSort<T>::sort() {
             break;
         }
     }
+    // this->screen.PostEvent(ftxui::Event::Custom);
 }

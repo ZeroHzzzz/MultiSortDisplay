@@ -11,7 +11,7 @@
  */
 template <typename T>
 class HeapSort : public Sort<T> {
-   private:
+   public:
     /**
      * @brief 调整堆的大小
      *
@@ -21,11 +21,14 @@ class HeapSort : public Sort<T> {
      */
     void heapify(std::vector<T>& arr, size_t n, size_t i);
 
-   public:
     /**
      * @brief 执行堆排序
      */
     void sort() override;
+    HeapSort(std::vector<T>& input,
+             ftxui::ScreenInteractive& screen,
+             size_t speed = 1000)
+        : Sort<T>(input, screen, speed) {};
 };
 
 #endif

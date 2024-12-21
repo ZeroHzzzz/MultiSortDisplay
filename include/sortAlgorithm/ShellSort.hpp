@@ -15,6 +15,9 @@ class ShellSort : public Sort<T> {
      * @brief 执行希尔排序
      */
     void sort() override;
+    ShellSort(std::vector<T>& input,
+              ftxui::ScreenInteractive& screen,
+              size_t speed = 1000);
 };
 
 #endif
