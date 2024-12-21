@@ -185,13 +185,3 @@ void Windows::Show() {
         sort_thread_ptr->join();
     }
 }
-
-void Windows::refresh() {
-    screen.Post([&] {});
-}
-
-void Windows::update(std::vector<int>& update_vector) {
-    // data.clear();
-    data = update_vector;
-    refresh();
-}
