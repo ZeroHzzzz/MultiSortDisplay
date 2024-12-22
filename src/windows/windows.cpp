@@ -5,8 +5,11 @@
 void Windows::Show() {
     auto algorithm_list_container = Container::Vertical({});
     for (const auto& name : algorithms) {
-        algorithm_list_container->Add(
-            Button(name, [&] { algorithm_selected = name; }));
+        algorithm_list_container->Add(Button(name, [&] {
+            algorithm_selected = name;
+            algorithm_Info_text = "selected for " + algorithm_selected;
+            screen.PostEvent(ftxui::Event::Custom);
+        }));
     }
 
     auto algorithm_list = Renderer(algorithm_list_container, [&] {
@@ -36,7 +39,8 @@ void Windows::Show() {
 
         // 修正 window 的调用
         return window(text(" 算法过程输出 "),
-                      vbox(std::move(bars))  // vbox 应该放入 bars
+                      vbox(text(algorithm_Info_text),
+                           std::move(bars))  // vbox 应该放入 bars
                       ) |
                flex;
     });
@@ -51,10 +55,29 @@ void Windows::Show() {
 
     // 右中 指标输出
     auto metrics_output_renderer = Renderer([&] {
-        return window(text(" 指标输出 "), vbox({
-                                              text("a:"),
-                                              text(debug_text),
-                                          })) |
+        return window(text(" 指标输出 "),
+                      vbox({//   text("a:"),
+                            text(metrics_Info_text),
+                            hbox({vbox({
+                                      text("Stablity:"),
+                                      text("Comparisons:"),
+                                      text("Swaps:"),
+                                      text("Function Calls:"),
+                                      text("Loop Iterations:"),
+                                      text("Max Recursion Depth:"),
+                                      text("Memory Usage:"),
+                                      text("Run Time:"),
+                                  }),
+                                  vbox({
+                                      text(metrics["Stability"]),
+                                      text(metrics["Comparisons"]),
+                                      text(metrics["Swaps"]),
+                                      text(metrics["FunctionCall"]),
+                                      text(metrics["LoopIterations"]),
+                                      text(metrics["Depth"]),
+                                      text(metrics["Memory"]),
+                                      text(metrics["RunTime"]),
+                                  })})})) |
                flex;
     });
 
@@ -62,8 +85,9 @@ void Windows::Show() {
     // Run 按钮
     auto run_button = Button("Run", [&] {
         // handle input
-        std::stringstream ss(array_input);
         data.clear();
+
+        std::stringstream ss(array_input);
         int value;
         while (ss >> value) {
             if (value > 0) {  // 过滤负数

@@ -9,6 +9,7 @@
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <iomanip>
+#include <map>
 #include <sstream>
 #include <string>
 #include <thread>
@@ -26,8 +27,11 @@ class Windows {
 
     // 状态变量
     std::string debug_text = "";
-    std::string algorithm_selected = "BubbleSort";  // 用户选择的算法
-    std::string array_input = "";                   // 用户输入的数组
+    std::string metrics_Info_text = "";
+    std::string algorithm_Info_text =
+        "Please select an algorithm. Default : BubbleSort";  // 算法信息
+    std::string algorithm_selected = "BubbleSort";           // 用户选择的算法
+    std::string array_input = "";                            // 用户输入的数组
     std::vector<int> data = {1, 5, 3, 3, 6, 4, 7, 1};  // 用于显示的数组数据
     std::atomic<bool> sort_running{false};
 
@@ -43,9 +47,12 @@ class Windows {
         "BubbleSort",    "HeapSort",  "InsertionSort",
         "Introsort",     "MergeSort", "QuickSort",
         "SelectionSort", "ShellSort", "TimSort"};
-
+    std::map<std::string, std::string> metrics = {
+        {"Comparisons", ""},    {"Swaps", ""},    {"FunctionCall", ""},
+        {"LoopIterations", ""}, {"Depth", ""},    {"Memory", ""},
+        {"RunTime", ""},        {"Stability", ""}};
     /**
-     * @brief 显示主界面
+     * @brief 显示主界面Depth
      */
     void Show();
 };

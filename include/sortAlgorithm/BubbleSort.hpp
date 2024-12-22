@@ -18,7 +18,9 @@ class BubbleSort : public Sort<T> {
                ftxui::ScreenInteractive& screen,
                size_t speed = 1000,
                bool GUI = true)
-        : Sort<T>(input, screen, speed, GUI) {};
+        : Sort<T>(input, screen, speed, GUI) {
+        this->stability = "Unstable";
+    };
     void sort() override;
 };
 

@@ -11,6 +11,7 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+
 /**
  * @brief 排序方向枚举
  */
@@ -28,6 +29,7 @@ template <typename T>
 class Sort {
    public:
     std::vector<T>& arr;                         // 存储待排序数组
+    std::string stability = "";                  // 稳定性
     size_t comparisons = 0;                      // 比较操作的次数
     size_t swaps = 0;                            // 交换操作的次数
     size_t functionCalls = 0;                    // 递归函数调用的次数
@@ -45,14 +47,14 @@ class Sort {
          size_t speed,
          bool GUI)
         : arr(input), screen(screen), SPEED(speed), GUI(GUI) {};
-    void resetMetrics();                  // 重置所有指标
     void swap(T& a, T& b);                // 交换元素
     size_t calculateMemoryUsage() const;  // 计算数组占用的内存
 
     // void setData(const std::vector<T>& input);  // 设置待排序的数据
     void setSortOrder(SortOrder order);                 // 设置排序方向
     void executeSort(int speed = 0, bool gui = false);  // 执行排序
-    void displayMetrics() const;                        // 输出排序指标
+    void updateMetrics(std::map<std::string, std::string>&) const;
+    void resetMetrics(std::map<std::string, std::string>&);  // 重置所有指标
 
     virtual void sort() = 0;  // 纯虚函数，子类需要实现具体的排序逻辑
 
@@ -60,10 +62,12 @@ class Sort {
 };
 
 template <typename T>
-void Sort<T>::resetMetrics() {
+void Sort<T>::resetMetrics(std::map<std::string, std::string>& metrics) {
     comparisons = swaps = functionCalls = loopIterations = 0;
     recursionDepth = maxRecursionDepth = 0;
     runTime = std::chrono::duration<double>::zero();
+    stability = "";
+    updateMetrics(metrics);
 }
 
 template <typename T>
@@ -77,17 +81,11 @@ void Sort<T>::swap(T& a, T& b) {
 template <typename T>
 size_t Sort<T>::calculateMemoryUsage() const {
     size_t arrayMemory = arr.capacity() * sizeof(T);  // 数组分配的内存
-    size_t vectorMetadata = sizeof(std::vector<T>);  // vector 的元数据内存
+    size_t vectorMetadata = sizeof(std::vector<T>);   // vector 的元数据内存
     size_t stackMemory =
         maxRecursionDepth * 64;  // 递归栈内存，以每层栈帧64字节算
     return arrayMemory + vectorMetadata + stackMemory;
 }
-
-// template <typename T>
-// void Sort<T>::setData(const std::vector<T>& input) {
-//     arr = input;
-//     resetMetrics();
-// }
 
 template <typename T>
 void Sort<T>::setSortOrder(SortOrder order) {
@@ -105,22 +103,18 @@ void Sort<T>::executeSort(int speed, bool gui) {
     sort();
     auto end = std::chrono::high_resolution_clock::now();
     runTime = end - start;
-
-    // display();  // 可添加显示逻辑
-    // displayMetrics();
-    // system("pause");
 }
 
 template <typename T>
-void Sort<T>::displayMetrics() const {
-    // std::cout << "Sorting Metrics:\n";
-    // std::cout << "  Comparisons: " << comparisons << "\n";
-    // std::cout << "  Swaps: " << swaps << "\n";
-    // std::cout << "  Function Calls: " << functionCalls << "\n";
-    // std::cout << "  Loop Iterations: " << loopIterations << "\n";
-    // std::cout << "  Max Recursion Depth: " << maxRecursionDepth << "\n";
-    // std::cout << "  Memory Usage: " << calculateMemoryUsage() << " bytes\n";
-    // std::cout << "  Run Time: " << runTime.count() << " seconds\n";
+void Sort<T>::updateMetrics(std::map<std::string, std::string>& metrics) const {
+    metrics["Comparisons"] = std::to_string(comparisons);
+    metrics["Swaps"] = std::to_string(swaps);
+    metrics["FunctionCall"] = std::to_string(functionCalls);
+    metrics["LoopIterations"] = std::to_string(loopIterations);
+    metrics["Depth"] = std::to_string(maxRecursionDepth);
+    metrics["Memory"] = std::to_string(calculateMemoryUsage());
+    metrics["RunTime"] = std::to_string(runTime.count());
+    metrics["Stability"] = stability;
 }
 
 #endif
