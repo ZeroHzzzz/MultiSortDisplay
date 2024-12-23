@@ -1,5 +1,4 @@
-#ifndef _HEADFILE_HPP_
-#define _HEADFILE_HPP_
+#pragma once
 #include "common/factory.hpp"
 #include "common/machine.hpp"
 #include "sortAlgorithm/BubbleSort.hpp"
@@ -18,5 +17,3 @@ extern SortFactory<int> factory;
 extern Windows win;  // 窗口
 
 template class SortFactory<int>;
-
-#endif  // _HEADFILE_HPP_

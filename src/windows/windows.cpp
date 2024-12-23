@@ -75,6 +75,7 @@ void Windows::Show() {
     //                size(HEIGHT, EQUAL, 8);
     //     });
     // }
+    
     auto data_type_component =
         Radiobox(&data_type_options, &data_type_selected);
     auto array_input_component = Input(&array_input, "Enter array here...");
@@ -83,7 +84,7 @@ void Windows::Show() {
         auto current_component = (mode_selection == 1)
                                      ? array_input_component->Render()
                                      : data_type_component->Render();
-
+                                     
         return window({text("需要排序的数组输入")}, current_component) |
                size(HEIGHT, EQUAL, 8);
     });
@@ -234,6 +235,8 @@ void Windows::Show() {
     auto main_container = Container::Vertical({
         algorithm_list_container,
         array_input_component,
+        data_type_component,
+        right_panel,
         buttons_container,
         settings_container,
     });
