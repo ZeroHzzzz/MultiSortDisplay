@@ -75,7 +75,8 @@ void Windows::Show() {
     //                size(HEIGHT, EQUAL, 8);
     //     });
     // }
-    auto data_type_component = Toggle(&data_type_options, &data_type_selected);
+    auto data_type_component =
+        Radiobox(&data_type_options, &data_type_selected);
     auto array_input_component = Input(&array_input, "Enter array here...");
     auto array_input_renderer = Renderer([&] {
         // 根据 mode_selection 渲染相应的组件
