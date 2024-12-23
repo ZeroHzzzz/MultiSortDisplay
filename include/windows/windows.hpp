@@ -54,7 +54,7 @@ class Windows {
         {"LoopIterations", ""}, {"Depth", ""},    {"Memory", ""},
         {"RunTime", ""},        {"Stability", ""}};
     std::vector<std::string> data_type_options = {
-        "Ramdom",          "Sorted",     "Reversed",
+        "Random",          "Sorted",     "Reversed",
         "PartiallySorted", "Duplicates", "Same"};
     /**
      * @brief 显示主界面Depth

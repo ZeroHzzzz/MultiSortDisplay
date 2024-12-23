@@ -72,29 +72,32 @@ void Windows::Show() {
     // 右中 指标输出
     auto metrics_output_renderer = Renderer([&] {
         return window(text(" 指标输出 "),
-                      vbox({//   text("a:"),
-                            text(metrics_Info_text) | center,
-                            separator() | size(WIDTH, EQUAL, 15) | center,
-                            hbox({vbox({
-                                      text("Stablity:"),
-                                      text("Comparisons:"),
-                                      text("Swaps:"),
-                                      text("Function Calls:"),
-                                      text("Loop Iterations:"),
-                                      text("Max Recursion Depth:"),
-                                      text("Memory Usage:"),
-                                      text("Run Time:"),
-                                  }),
-                                  vbox({
-                                      text(metrics["Stability"]),
-                                      text(metrics["Comparisons"]),
-                                      text(metrics["Swaps"]),
-                                      text(metrics["FunctionCall"]),
-                                      text(metrics["LoopIterations"]),
-                                      text(metrics["Depth"]),
-                                      text(metrics["Memory"]),
-                                      text(metrics["RunTime"]),
-                                  })})})) |
+                      vbox({
+                          //   text("a:"),
+                          text(metrics_Info_text) | center,
+                          separator() | size(WIDTH, EQUAL, 15) | center,
+                          hbox({vbox({
+                                    text("Stablity:"),
+                                    text("Comparisons:"),
+                                    text("Swaps:"),
+                                    text("Function Calls:"),
+                                    text("Loop Iterations:"),
+                                    text("Max Recursion Depth:"),
+                                    text("Memory Usage:"),
+                                    text("Run Time:"),
+                                }),
+                                vbox({
+                                    text(metrics["Stability"]),
+                                    text(metrics["Comparisons"]),
+                                    text(metrics["Swaps"]),
+                                    text(metrics["FunctionCall"]),
+                                    text(metrics["LoopIterations"]),
+                                    text(metrics["Depth"]),
+                                    text(metrics["Memory"]),
+                                    text(metrics["RunTime"]),
+                                })}),
+                          text(debug_text),
+                      })) |
                flex;
     });
 

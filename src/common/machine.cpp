@@ -39,6 +39,8 @@ void Machine::AutoTest(ftxui::ScreenInteractive& screen, int size) {
             (this->*(it->second))(test_data);
         }
 
+        // win.debug_text = std::to_string(test_data.size());
+        // return;
         auto sorter =
             factory.create(win.algorithm_selected, test_data, screen,
                            speed[win.speed_options[win.playback_speed]],
@@ -62,19 +64,19 @@ void Machine::AutoTest(ftxui::ScreenInteractive& screen, int size) {
 
 void Machine::Random(std::vector<int>& arr) {
     for (int i = 0; i < size; ++i) {
-        arr[i] = std::rand() % 10000;  // 随机数范围：0 到 9999
+        arr.push_back(std::rand() % 10000);  // 随机数范围：0 到 9999
     }
 }
 
 void Machine::Sorted(std::vector<int>& arr) {
     for (int i = 0; i < size; ++i) {
-        arr[i] = i;  // 生成升序排列的数组
+        arr.push_back(i);  // 生成升序排列的数组
     }
 }
 
 void Machine::ReverseSorted(std::vector<int>& arr) {
     for (int i = 0; i < size; ++i) {
-        arr[i] = size - i - 1;  // 生成降序排列的数组
+        arr.push_back(size - i - 1);  // 生成降序排列的数组
     }
 }
 
@@ -88,12 +90,13 @@ void Machine::PartiallySorted(std::vector<int>& arr) {
 
 void Machine::Duplicates(std::vector<int>& arr) {
     for (int i = 0; i < size; ++i) {
-        arr[i] = std::rand() % 5000;  // 生成 0 到 4999 的重复元素
+        arr.push_back(std::rand() % 5000);
     }
 }
 
 void Machine::Same(std::vector<int>& arr) {
+    int value = std::rand();
     for (int i = 0; i < size; ++i) {
-        arr[i] = 42;  // 所有元素都是 42
+        arr.push_back(value);
     }
 }
