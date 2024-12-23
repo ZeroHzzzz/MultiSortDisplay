@@ -16,7 +16,7 @@ void Windows::Show() {
     for (const auto& name : algorithms) {
         algorithm_list_container->Add(Button(name, [&] {
             algorithm_selected = name;
-            algorithm_Info_text = "selected for " + algorithm_selected;
+            algorithm_Info_text = "Selected: " + algorithm_selected;
             screen.PostEvent(ftxui::Event::Custom);
         }));
     }
@@ -30,22 +30,25 @@ void Windows::Show() {
     // 中间 算法过程输出
     auto process_output_renderer = Renderer([&] {
         std::vector<Element> bars;
-        int max_height = 10;  // 最大显示高度
-        if (!data.empty()) {
-            int max_value = *std::max_element(data.begin(), data.end());
-            for (int& value : data) {
-                value = max_value > max_height ? value * max_height / max_value
-                                               : value;
+
+        if (win.mode_selection && win.graphics_selection) {
+            int max_height = 10;  // 最大显示高度
+            if (!data.empty()) {
+                int max_value = *std::max_element(data.begin(), data.end());
+                for (int& value : data) {
+                    value = max_value > max_height
+                                ? value * max_height / max_value
+                                : value;
+                }
+            }
+            for (int value : data) {
+                std::string result(value, '#');
+                bars.push_back(hbox({
+                    text(std::to_string(value)),  // 显示数值
+                    text(result),
+                }));
             }
         }
-        for (int value : data) {
-            std::string result(value, '#');
-            bars.push_back(hbox({
-                text(std::to_string(value)),  // 显示数值
-                text(result),
-            }));
-        }
-
         // 修正 window 的调用
         return window(text(" 算法过程输出 "),
                       vbox(text(algorithm_Info_text),
@@ -54,37 +57,14 @@ void Windows::Show() {
                flex;
     });
 
-    // 右上角 需要排序的数组输入
-    // ftxui::Component array_input_renderer;
-    // auto array_input_component = Input(&array_input, "Enter array here...");
-    // auto data_type_component =
-    //     Radiobox(&data_type_options, &data_type_selected);
-
-    // if (mode_selection == 0) {
-    //     array_input_renderer = Renderer([&] {
-    //         // 根据 mode_selection 渲染相应的组件
-    //         auto current_component = array_input_component->Render();
-
-    //         return window({text("需要排序的数组输入")}, current_component) |
-    //                size(HEIGHT, EQUAL, 8);
-    //     });
-    // } else {
-    //     array_input_renderer = Renderer(data_type_component, [&] {
-    //         return window({text("Data Type")}, data_type_component->Render())
-    //         |
-    //                size(HEIGHT, EQUAL, 8);
-    //     });
-    // }
-    
-    auto data_type_component =
-        Radiobox(&data_type_options, &data_type_selected);
+    auto data_type_component = Menu(&data_type_options, &data_type_selected);
     auto array_input_component = Input(&array_input, "Enter array here...");
     auto array_input_renderer = Renderer([&] {
         // 根据 mode_selection 渲染相应的组件
         auto current_component = (mode_selection == 1)
                                      ? array_input_component->Render()
                                      : data_type_component->Render();
-                                     
+
         return window({text("需要排序的数组输入")}, current_component) |
                size(HEIGHT, EQUAL, 8);
     });
@@ -124,21 +104,32 @@ void Windows::Show() {
         // handle input
         data.clear();
 
-        if (array_input.empty()) {
-            algorithm_Info_text = "Please enter a valid array";
-        } else {
-            std::stringstream ss(array_input);
-            int value;
-            while (ss >> value) {
-                if (value > 0) {  // 过滤负数
-                    data.push_back(value);
+        if (mode_selection) {
+            if (array_input.empty()) {
+                algorithm_Info_text = "Please enter a valid array";
+            } else {
+                std::stringstream ss(array_input);
+                int value;
+                while (ss >> value) {
+                    if (value > 0) {  // 过滤负数
+                        data.push_back(value);
+                    }
+                }
+
+                if (!sort_running.load()) {
+                    sort_running.store(true);
+                    std::thread sort_thread([&]() {
+                        Testmachine.ManualTest(screen);
+                        sort_running.store(false);
+                    });
+                    sort_thread.detach();
                 }
             }
-
+        } else {
             if (!sort_running.load()) {
                 sort_running.store(true);
                 std::thread sort_thread([&]() {
-                    Testmachine.ManualTest(screen);
+                    Testmachine.AutoTest(screen, 100001);
                     sort_running.store(false);
                 });
                 sort_thread.detach();

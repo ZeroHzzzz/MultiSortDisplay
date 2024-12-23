@@ -26,8 +26,9 @@ class HeapSort : public Sort<T> {
     HeapSort(std::vector<T>& input,
              ftxui::ScreenInteractive& screen,
              size_t speed = 1000,
-             bool GUI = true)
-        : Sort<T>(input, screen, speed, GUI) {
+             bool GUI = true,
+             int order = 0)
+        : Sort<T>(input, screen, speed, GUI, order) {
         this->stability = "Unstable";
     };
 };

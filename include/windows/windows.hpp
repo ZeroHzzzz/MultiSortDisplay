@@ -31,7 +31,7 @@ class Windows {
         "Please select an algorithm. Default : BubbleSort";  // 算法信息
     std::string algorithm_selected = "BubbleSort";           // 用户选择的算法
     std::string array_input = "";                            // 用户输入的数组
-    std::vector<int> data = {1, 5, 3, 3, 6, 4, 7, 1};  // 用于显示的数组数据
+    std::vector<int> data;  // 用于显示的数组数据
     std::atomic<bool> sort_running{false};
 
     // 设置项状态变量
@@ -48,7 +48,7 @@ class Windows {
 
     std::vector<std::string> algorithms = {
         "BubbleSort",    "HeapSort",  "InsertionSort", "MergeSort", "QuickSort",
-        "SelectionSort", "ShellSort", "Introsort",     "TimSort"};
+        "SelectionSort", "ShellSort", "IntroSort",     "TimSort"};
     std::map<std::string, std::string> metrics = {
         {"Comparisons", ""},    {"Swaps", ""},    {"FunctionCall", ""},
         {"LoopIterations", ""}, {"Depth", ""},    {"Memory", ""},

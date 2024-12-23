@@ -27,7 +27,8 @@ class SortFactory {
                                            std::vector<T>& input,
                                            ftxui::ScreenInteractive& screen,
                                            size_t speed,
-                                           bool GUI);
+                                           bool GUI,
+                                           int order);
 
     /**
      * @brief 注册排序算法类型及其构造逻辑
@@ -36,24 +37,25 @@ class SortFactory {
      */
     static void registerType(
         const std::string& name,
-        std::function<std::unique_ptr<
-            Sort<T>>(std::vector<T>&, ftxui::ScreenInteractive&, size_t, bool)>
+        std::function<std::unique_ptr<Sort<
+            T>>(std::vector<T>&, ftxui::ScreenInteractive&, size_t, bool, int)>
             factory);
 
    private:
     // 保存排序算法类型名称和其对应的构造逻辑
     static std::map<
         std::string,
-        std::function<std::unique_ptr<
-            Sort<T>>(std::vector<T>&, ftxui::ScreenInteractive&, size_t, bool)>>
+        std::function<std::unique_ptr<Sort<
+            T>>(std::vector<T>&, ftxui::ScreenInteractive&, size_t, bool, int)>>
         factoryMap;
 };
 
 // 静态成员变量定义
 template <typename T>
-std::map<std::string,
-         std::function<std::unique_ptr<Sort<
-             T>>(std::vector<T>&, ftxui::ScreenInteractive&, size_t, bool)>>
+std::map<
+    std::string,
+    std::function<std::unique_ptr<Sort<
+        T>>(std::vector<T>&, ftxui::ScreenInteractive&, size_t, bool, int)>>
     SortFactory<T>::factoryMap;
 
 // 实现 create 方法
@@ -63,10 +65,12 @@ std::unique_ptr<Sort<T>> SortFactory<T>::create(
     std::vector<T>& input,
     ftxui::ScreenInteractive& screen,
     size_t speed,
-    bool GUI) {
+    bool GUI,
+    int order) {
     auto it = factoryMap.find(type);
     if (it != factoryMap.end()) {
-        return it->second(input, screen, speed, GUI);  // 调用注册的构造逻辑
+        return it->second(input, screen, speed, GUI,
+                          order);  // 调用注册的构造逻辑
     }
     throw std::runtime_error("Sort type not registered");
 }
@@ -76,7 +80,7 @@ template <typename T>
 void SortFactory<T>::registerType(
     const std::string& name,
     std::function<std::unique_ptr<
-        Sort<T>>(std::vector<T>&, ftxui::ScreenInteractive&, size_t, bool)>
+        Sort<T>>(std::vector<T>&, ftxui::ScreenInteractive&, size_t, bool, int)>
         factory) {
     factoryMap[name] = std::move(factory);
 }

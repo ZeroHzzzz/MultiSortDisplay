@@ -16,8 +16,33 @@ class Machine {
                                         {"1.5x", 750},
                                         {"2x", 500},
                                         {"4x", 250}};
+    // std::unordered_map<std::string,
+    //                    std::function<void(Machine*, std::vector<int>&)>>
+    //     options_map = {{"Random", &Machine::Random},
+    //                    {"Sorted", &Machine::Sorted},
+    //                    {"Reversed", &Machine::ReverseSorted},
+    //                    {"PartiallySorted", &Machine::PartiallySorted},
+    //                    {"Duplicates", &Machine::Duplicates},
+    //                    {"Same", &Machine::Same}};
+    std::unordered_map<std::string, void (Machine::*)(std::vector<int>&)>
+        options_map = {{"Random", &Machine::Random},
+                       {"Sorted", &Machine::Sorted},
+                       {"Reversed", &Machine::ReverseSorted},
+                       {"PartiallySorted", &Machine::PartiallySorted},
+                       {"Duplicates", &Machine::Duplicates},
+                       {"Same", &Machine::Same}};
+    ;
 
-    void AutoTest(ftxui::ScreenInteractive& screen);
+    void AutoTest(ftxui::ScreenInteractive& screen, int size);
     void ManualTest(ftxui::ScreenInteractive& screen);
+
+    void Random(std::vector<int>& arr);
+    void Sorted(std::vector<int>& arr);
+    void ReverseSorted(std::vector<int>& arr);
+    void PartiallySorted(std::vector<int>& arr);
+    void Duplicates(std::vector<int>& arr);
+    void Same(std::vector<int>& arr);
+
+    size_t size = 10001;
 };
 extern std::unique_ptr<std::thread> sort_thread_ptr;

@@ -5,6 +5,7 @@
 #include <limits>     // For std::numeric_limits
 #include "sortAlgorithm/Sort.hpp"
 
+// TODO:Segmentation fault Bug
 /**
  * @brief 内省排序类，继承自 Sort 基类
  * @tparam T 数据类型
@@ -71,8 +72,9 @@ class IntroSort : public Sort<T> {
     IntroSort(std::vector<T>& input,
               ftxui::ScreenInteractive& screen,
               size_t speed = 1000,
-              bool GUI = true)
-        : Sort<T>(input, screen, speed, GUI) {
+              bool GUI = true,
+              int order = 0)
+        : Sort<T>(input, screen, speed, GUI, order) {
         this->stability = "Unstable";
     };
 };
