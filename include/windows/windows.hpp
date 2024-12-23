@@ -1,6 +1,5 @@
-// Windows.hpp
-#ifndef _WINDOWS_HPP_
-#define _WINDOWS_HPP_
+#pragma once
+
 #include <algorithm>  // for std::swap
 #include <atomic>
 #include <chrono>
@@ -62,5 +61,3 @@ class Windows {
      */
     void Show();
 };
-
-#endif

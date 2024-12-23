@@ -1,5 +1,4 @@
-#ifndef SORT_HPP
-#define SORT_HPP
+#pragma once
 
 #include <unistd.h>
 #include <atomic>
@@ -120,5 +119,3 @@ void Sort<T>::updateMetrics(std::map<std::string, std::string>& metrics) const {
     metrics["RunTime"] = std::to_string(runTime.count());
     metrics["Stability"] = stability;
 }
-
-#endif

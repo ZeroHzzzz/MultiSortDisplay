@@ -1,6 +1,4 @@
-// IntroSort.hpp
-#ifndef INTROSORT_HPP
-#define INTROSORT_HPP
+#pragma once
 
 #include <algorithm>  // For std::swap and std::partition
 #include <cmath>      // For log2
@@ -200,5 +198,3 @@ void IntroSort<T>::sort() {
         std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
     }
 }
-
-#endif

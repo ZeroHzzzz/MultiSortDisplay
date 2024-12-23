@@ -1,6 +1,4 @@
-// SelectionSort.hpp
-#ifndef SELECTION_SORT_HPP
-#define SELECTION_SORT_HPP
+#pragma once
 
 #include "sortAlgorithm/Sort.hpp"
 
@@ -54,5 +52,3 @@ void SelectionSort<T>::sort() {
         }
     }
 }
-
-#endif

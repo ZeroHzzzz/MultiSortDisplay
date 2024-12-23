@@ -1,6 +1,4 @@
-// MergeSort.hpp
-#ifndef MERGE_SORT_HPP
-#define MERGE_SORT_HPP
+#pragma once
 
 #include <vector>
 #include "sortAlgorithm/Sort.hpp"
@@ -122,5 +120,3 @@ void MergeSort<T>::sort() {
 
     mergeSort(this->arr, 0, n - 1);
 }
-
-#endif

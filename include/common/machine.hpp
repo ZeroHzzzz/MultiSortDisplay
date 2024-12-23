@@ -1,5 +1,5 @@
-#ifndef _MACHINE_HPP_
-#define _MACHINE_HPP_
+#pragma once
+
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/component_base.hpp>
 #include <ftxui/component/screen_interactive.hpp>
@@ -21,4 +21,3 @@ class Machine {
     void ManualTest(ftxui::ScreenInteractive& screen);
 };
 extern std::unique_ptr<std::thread> sort_thread_ptr;
-#endif

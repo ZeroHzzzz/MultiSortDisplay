@@ -1,6 +1,4 @@
-// BubbleSort.hpp
-#ifndef BUBBLE_SORT_HPP
-#define BUBBLE_SORT_HPP
+#pragma once
 
 #include "sortAlgorithm/Sort.hpp"
 
@@ -67,4 +65,3 @@ void BubbleSort<T>::sort() {
     }
     // this->screen.PostEvent(ftxui::Event::Custom);
 }
-#endif

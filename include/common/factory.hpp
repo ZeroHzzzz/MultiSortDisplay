@@ -1,5 +1,4 @@
-#ifndef SORT_FACTORY_HPP
-#define SORT_FACTORY_HPP
+#pragma once
 
 #include <functional>
 #include <map>
@@ -81,5 +80,3 @@ void SortFactory<T>::registerType(
         factory) {
     factoryMap[name] = std::move(factory);
 }
-
-#endif  // SORT_FACTORY_HPP

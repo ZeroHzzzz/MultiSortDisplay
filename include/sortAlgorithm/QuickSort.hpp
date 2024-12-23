@@ -1,6 +1,4 @@
-// QuickSort.hpp
-#ifndef QUICKSORT_HPP
-#define QUICKSORT_HPP
+#pragma once
 
 #include <cstdlib>  // 用于随机数生成
 #include "sortAlgorithm/Sort.hpp"
@@ -156,4 +154,3 @@ void QuickSort<T>::sort() {
 
     optimizedQuickSort(0, this->arr.size() - 1, 1);
 }
-#endif

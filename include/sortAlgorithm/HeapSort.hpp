@@ -1,6 +1,4 @@
-// HeapSort.hpp
-#ifndef HEAP_SORT_HPP
-#define HEAP_SORT_HPP
+#pragma once
 
 #include <vector>
 #include "headfile.hpp"
@@ -88,5 +86,3 @@ void HeapSort<T>::sort() {
         heapify(this->arr, i, 0);  // i 是堆的大小
     }
 }
-
-#endif

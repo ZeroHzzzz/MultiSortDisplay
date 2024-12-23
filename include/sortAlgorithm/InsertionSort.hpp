@@ -1,6 +1,4 @@
-// InsertionSort.hpp
-#ifndef INSERTION_SORT_HPP
-#define INSERTION_SORT_HPP
+#pragma once
 
 #include <algorithm>  // For std::lower_bound (binary search)
 #include "sortAlgorithm/Sort.hpp"
@@ -91,4 +89,3 @@ void InsertionSort<T>::sort() {
         }
     }
 }
-#endif

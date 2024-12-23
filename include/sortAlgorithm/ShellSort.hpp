@@ -1,6 +1,4 @@
-// ShellSort.hpp
-#ifndef SHELL_SORT_HPP
-#define SHELL_SORT_HPP
+#pragma once
 
 #include "sortAlgorithm/Sort.hpp"
 
@@ -59,5 +57,3 @@ void ShellSort<T>::sort() {
         gap /= 2;  // 减小增量
     }
 }
-
-#endif

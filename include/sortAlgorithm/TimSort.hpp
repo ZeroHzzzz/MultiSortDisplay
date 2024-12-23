@@ -1,6 +1,4 @@
-// TimSort.hpp
-#ifndef TIMSORT_HPP
-#define TIMSORT_HPP
+#pragma once
 
 #include <algorithm>
 #include <cmath>
@@ -152,5 +150,3 @@ void TimSort<T>::sort() {
         std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
     }
 }
-
-#endif
