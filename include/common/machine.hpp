@@ -17,7 +17,7 @@ class Machine {
                                         {"2x", 500},
                                         {"4x", 250}};
 
-    void AutoTest();
+    void AutoTest(ftxui::ScreenInteractive& screen);
     void ManualTest(ftxui::ScreenInteractive& screen);
 };
 extern std::unique_ptr<std::thread> sort_thread_ptr;

@@ -27,7 +27,7 @@ class Windows {
 
     // 状态变量
     std::string debug_text = "";
-    std::string metrics_Info_text = "";
+    std::string metrics_Info_text = "Metrics";
     std::string algorithm_Info_text =
         "Please select an algorithm. Default : BubbleSort";  // 算法信息
     std::string algorithm_selected = "BubbleSort";           // 用户选择的算法
@@ -39,18 +39,24 @@ class Windows {
     int graphics_selection = 1;  // Graphics 选项索引
     int playback_speed = 1;      // Playback Speed 选项索引
     int mode_selection = 1;      // Mode 选项索引
+    int order_selection = 0;     // Order 选项索引
+    int data_type_selected = 0;  // Data Type 选项索引
 
     std::vector<std::string> graphics_toggle_options = {"Disabled", "Enabled"};
     std::vector<std::string> speed_options = {"0.5x", "1x", "2x", "4x"};
     std::vector<std::string> mode_toggle_options = {"Automatic", "Manual"};
+    std::vector<std::string> order_toggle_options = {"Ascending", "Descending"};
+
     std::vector<std::string> algorithms = {
-        "BubbleSort",    "HeapSort",  "InsertionSort",
-        "Introsort",     "MergeSort", "QuickSort",
-        "SelectionSort", "ShellSort", "TimSort"};
+        "BubbleSort",    "HeapSort",  "InsertionSort", "MergeSort", "QuickSort",
+        "SelectionSort", "ShellSort", "Introsort",     "TimSort"};
     std::map<std::string, std::string> metrics = {
         {"Comparisons", ""},    {"Swaps", ""},    {"FunctionCall", ""},
         {"LoopIterations", ""}, {"Depth", ""},    {"Memory", ""},
         {"RunTime", ""},        {"Stability", ""}};
+    std::vector<std::string> data_type_options = {
+        "Ramdom",          "Sorted",     "Reversed",
+        "PartiallySorted", "Duplicates", "Same"};
     /**
      * @brief 显示主界面Depth
      */

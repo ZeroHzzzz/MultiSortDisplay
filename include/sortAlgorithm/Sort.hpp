@@ -38,6 +38,7 @@ class Sort {
     size_t maxRecursionDepth = 0;                // 最大递归深度
     std::chrono::duration<double> runTime;       // 排序运行时间
     SortOrder sortOrder = SortOrder::ASCENDING;  // 排序方向，默认为递增
+
     ftxui::ScreenInteractive& screen;
     bool GUI = false;
     size_t SPEED = 0;
@@ -45,8 +46,11 @@ class Sort {
     Sort(std::vector<T>& input,
          ftxui::ScreenInteractive& screen,
          size_t speed,
-         bool GUI)
-        : arr(input), screen(screen), SPEED(speed), GUI(GUI) {};
+         bool GUI,
+         int order = 0)
+        : arr(input), screen(screen), SPEED(speed), GUI(GUI) {
+        sortOrder = (order == 0) ? SortOrder::ASCENDING : SortOrder::DESCENDING;
+    };
     void swap(T& a, T& b);                // 交换元素
     size_t calculateMemoryUsage() const;  // 计算数组占用的内存
 

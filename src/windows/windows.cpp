@@ -4,6 +4,15 @@
 
 void Windows::Show() {
     auto algorithm_list_container = Container::Vertical({});
+    // for (auto it = algorithms.begin(); it != algorithms.end(); ++it) {
+    //     // TODO: Add a separator
+    //     algorithm_list_container->Add(Button(*it, [&] {
+    //         algorithm_selected = *it;
+    //         algorithm_Info_text = "selected for " + algorithm_selected;
+    //         screen.PostEvent(ftxui::Event::Custom);
+    //     }));
+    // }
+
     for (const auto& name : algorithms) {
         algorithm_list_container->Add(Button(name, [&] {
             algorithm_selected = name;
@@ -46,10 +55,35 @@ void Windows::Show() {
     });
 
     // 右上角 需要排序的数组输入
+    // ftxui::Component array_input_renderer;
+    // auto array_input_component = Input(&array_input, "Enter array here...");
+    // auto data_type_component =
+    //     Radiobox(&data_type_options, &data_type_selected);
+
+    // if (mode_selection == 0) {
+    //     array_input_renderer = Renderer([&] {
+    //         // 根据 mode_selection 渲染相应的组件
+    //         auto current_component = array_input_component->Render();
+
+    //         return window({text("需要排序的数组输入")}, current_component) |
+    //                size(HEIGHT, EQUAL, 8);
+    //     });
+    // } else {
+    //     array_input_renderer = Renderer(data_type_component, [&] {
+    //         return window({text("Data Type")}, data_type_component->Render())
+    //         |
+    //                size(HEIGHT, EQUAL, 8);
+    //     });
+    // }
+    auto data_type_component = Toggle(&data_type_options, &data_type_selected);
     auto array_input_component = Input(&array_input, "Enter array here...");
-    auto array_input_renderer = Renderer(array_input_component, [&] {
-        return window(text(" 需要排序的数组输入 "),
-                      array_input_component->Render()) |
+    auto array_input_renderer = Renderer([&] {
+        // 根据 mode_selection 渲染相应的组件
+        auto current_component = (mode_selection == 1)
+                                     ? array_input_component->Render()
+                                     : data_type_component->Render();
+
+        return window({text("需要排序的数组输入")}, current_component) |
                size(HEIGHT, EQUAL, 8);
     });
 
@@ -57,7 +91,8 @@ void Windows::Show() {
     auto metrics_output_renderer = Renderer([&] {
         return window(text(" 指标输出 "),
                       vbox({//   text("a:"),
-                            text(metrics_Info_text),
+                            text(metrics_Info_text) | center,
+                            separator() | size(WIDTH, EQUAL, 15) | center,
                             hbox({vbox({
                                       text("Stablity:"),
                                       text("Comparisons:"),
@@ -87,21 +122,25 @@ void Windows::Show() {
         // handle input
         data.clear();
 
-        std::stringstream ss(array_input);
-        int value;
-        while (ss >> value) {
-            if (value > 0) {  // 过滤负数
-                data.push_back(value);
+        if (array_input.empty()) {
+            algorithm_Info_text = "Please enter a valid array";
+        } else {
+            std::stringstream ss(array_input);
+            int value;
+            while (ss >> value) {
+                if (value > 0) {  // 过滤负数
+                    data.push_back(value);
+                }
             }
-        }
 
-        if (!sort_running.load()) {
-            sort_running.store(true);
-            std::thread sort_thread([&]() {
-                Testmachine.ManualTest(screen);
-                sort_running.store(false);
-            });
-            sort_thread.detach();
+            if (!sort_running.load()) {
+                sort_running.store(true);
+                std::thread sort_thread([&]() {
+                    Testmachine.ManualTest(screen);
+                    sort_running.store(false);
+                });
+                sort_thread.detach();
+            }
         }
     });
 
@@ -130,7 +169,7 @@ void Windows::Show() {
     auto buttons_renderer = Renderer(buttons_container, [&] {
         return hbox({
             run_button_renderer->Render(),
-            separator(),
+            separator() | size(HEIGHT, EQUAL, 3) | center,
             exit_button_renderer->Render(),
         });
     });
@@ -140,28 +179,34 @@ void Windows::Show() {
         Toggle(&graphics_toggle_options, &graphics_selection);
     auto speed_toggle = Toggle(&speed_options, &playback_speed);
     auto mode_toggle = Toggle(&mode_toggle_options, &mode_selection);
+    auto order_toggle = Toggle(&order_toggle_options, &order_selection);
 
     auto settings_container = Container::Vertical({
         graphics_toggle,
         speed_toggle,
         mode_toggle,
+        order_toggle,
     });
 
     auto settings_renderer = Renderer(settings_container, [&] {
         return window(
             text(" Settings "),
             hbox({
-                vbox({hbox({text("Graphics: "),
-                            text(graphics_toggle_options[graphics_selection])}),
-                      hbox({text("Playback Speed: "),
-                            text(speed_options[playback_speed])}),
-                      hbox({text("Mode: "),
-                            text(mode_toggle_options[mode_selection])})}) |
-                    size(WIDTH, GREATER_THAN, 30),
+                vbox({
+                    hbox({text("Graphics: "),
+                          text(graphics_toggle_options[graphics_selection])}),
+                    hbox({text("Playback Speed: "),
+                          text(speed_options[playback_speed])}),
+                    hbox({text("Mode: "),
+                          text(mode_toggle_options[mode_selection])}),
+                    hbox({text("Order: "),
+                          text(order_toggle_options[order_selection])}),
+                }) | size(WIDTH, GREATER_THAN, 30),
                 vbox({
                     graphics_toggle->Render(),
                     speed_toggle->Render(),
                     mode_toggle->Render(),
+                    order_toggle->Render(),
                 }),
             }));
     });
