@@ -112,7 +112,7 @@ void Windows::Show() {
             if (array_input.empty()) {
                 algorithm_Info_text = "Please enter a valid array";
             } else {
-                std::regex re("[^0-9-]+");
+                std::regex re("[\\s,，;|]+");
                 std::sregex_token_iterator it(array_input.begin(),
                                               array_input.end(), re, -1);
                 std::sregex_token_iterator end;
@@ -121,8 +121,8 @@ void Windows::Show() {
                     std::string token = *it;
                     if (!token.empty()) {
                         try {
-                            int value = std::stoi(token);  // 转换为整数
-                            if (value > 0) {               // 过滤负数
+                            int value = std::stoi(token);   // 转换为整数
+                            if (value > 0 && value < 10) {  // 过滤负数
                                 data.push_back(value);
                             }
                         } catch (const std::invalid_argument&) {
