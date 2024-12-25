@@ -18,13 +18,14 @@ class SelectionSort : public Sort<T> {
                   size_t speed = 1000,
                   bool GUI = true,
                   int order = 0)
-        : Sort<T>(input, screen, speed, GUI, order) {
-        this->stability = "Unstable";
-    };
+        : Sort<T>(input, screen, speed, GUI, order) {};
+    std::string getStability() const override { return this->stability; }
 };
 
 template <typename T>
 void SelectionSort<T>::sort() {
+    this->stability = "Unstable";
+    this->functionCalls++;
     size_t n = this->arr.size();
     if (n <= 1)
         return;
@@ -36,6 +37,8 @@ void SelectionSort<T>::sort() {
 
         // 在未排序部分找到最小元素
         for (size_t j = i + 1; j < n; ++j) {
+            this->comparisons++;  // 记录一次比较
+            this->loopIterations++;
             if (this->arr[j] < this->arr[minIndex]) {
                 minIndex = j;  // 更新最小元素的索引
             }
@@ -43,6 +46,7 @@ void SelectionSort<T>::sort() {
 
         // 如果找到的最小元素不是当前元素，则交换
         if (minIndex != i) {
+            this->swaps++;
             this->swap(this->arr[i], this->arr[minIndex]);
         }
 

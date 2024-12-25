@@ -32,14 +32,14 @@ class TimSort : public Sort<T> {
    public:
     // 执行 TimSort 排序
     void sort() override;
+
     TimSort(std::vector<T>& input,
             ftxui::ScreenInteractive& screen,
             size_t speed = 1000,
             bool GUI = true,
             int order = 0)
-        : Sort<T>(input, screen, speed, GUI, order) {
-        this->stability = "Stable";
-    };
+        : Sort<T>(input, screen, speed, GUI, order) {};
+    std::string getStability() const override { return this->stability; }
 };
 
 template <typename T>
@@ -50,15 +50,16 @@ void TimSort<T>::insertionSort(size_t left, size_t right) {
         while (j > left && this->arr[j - 1] > key) {
             this->arr[j] = this->arr[j - 1];
             --j;
-            this->comparisons++;
-            this->swaps++;
+            this->comparisons++;     // 增加比较次数
+            this->swaps++;           // 增加交换次数
+            this->loopIterations++;  // 增加循环次数
         }
         this->arr[j] = key;
         if (this->GUI) {
             this->screen.PostEvent(ftxui::Event::Custom);
             std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
         }
-        this->loopIterations++;
+        this->loopIterations++;  // 增加插入排序的循环次数
     }
 }
 
@@ -79,27 +80,27 @@ void TimSort<T>::merge(size_t left, size_t mid, size_t right) {
 
     size_t i = 0, j = 0, k = left;
     while (i < len1 && j < len2) {
-        this->comparisons++;
+        this->comparisons++;  // 比较次数
         if (leftArr[i] <= rightArr[j]) {
-            this->arr[k] = leftArr[i++];
+            this->arr[k++] = leftArr[i++];
         } else {
-            this->arr[k] = rightArr[j++];
+            this->arr[k++] = rightArr[j++];
         }
-        ++k;
-        this->loopIterations++;
-        this->swaps++;
+        this->loopIterations++;  // 增加循环次数
+        this->swaps++;           // 交换次数
     }
 
+    // 复制剩余元素
     while (i < len1) {
         this->arr[k++] = leftArr[i++];
-        this->loopIterations++;
-        this->swaps++;
+        this->loopIterations++;  // 增加循环次数
+        this->swaps++;           // 交换次数
     }
 
     while (j < len2) {
         this->arr[k++] = rightArr[j++];
-        this->loopIterations++;
-        this->swaps++;
+        this->loopIterations++;  // 增加循环次数
+        this->swaps++;           // 交换次数
     }
 
     if (this->GUI) {
@@ -127,24 +128,25 @@ void TimSort<T>::createRuns() {
     size_t n = this->arr.size();
     for (size_t start = 0; start < n; start += MIN_RUN) {
         size_t end = std::min(start + MIN_RUN - 1, n - 1);
-        insertionSort(start, end);
+        insertionSort(start, end);  // 对每个块使用插入排序
     }
 }
 
 template <typename T>
 void TimSort<T>::timSort() {
-    this->functionCalls++;
-    createRuns();
-    timSortMerge();
+    this->functionCalls++;  // 增加函数调用次数
+    createRuns();           // 创建并排序 runs
+    timSortMerge();         // 合并所有 runs
 }
 
 template <typename T>
 void TimSort<T>::sort() {
+    this->stability = "Stable";
     if (this->arr.size() <= 1)
         return;
 
-    this->functionCalls++;
-    timSort();
+    this->functionCalls++;  // 增加函数调用次数
+    timSort();              // 执行 TimSort 排序
 
     if (this->GUI) {
         this->screen.PostEvent(ftxui::Event::Custom);

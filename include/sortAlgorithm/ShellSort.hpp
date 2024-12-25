@@ -18,13 +18,14 @@ class ShellSort : public Sort<T> {
               size_t speed = 1000,
               bool GUI = true,
               int order = 0)
-        : Sort<T>(input, screen, speed, GUI, order) {
-        this->stability = "Unstable";
-    };
+        : Sort<T>(input, screen, speed, GUI, order) {};
+    std::string getStability() const override { return this->stability; }
 };
 
 template <typename T>
 void ShellSort<T>::sort() {
+    this->stability = "Unstable";
+    this->functionCalls++;
     size_t n = this->arr.size();
     if (n <= 1)
         return;
@@ -34,8 +35,10 @@ void ShellSort<T>::sort() {
 
     // 从较大的增量开始，逐步减小增量，直到 1
     while (gap > 0) {
+        this->loopIterations++;
         // 对每个增量执行插入排序
         for (size_t i = gap; i < n; ++i) {
+            this->loopIterations++;
             T key = this->arr[i];
             size_t j = i;
 
@@ -45,6 +48,7 @@ void ShellSort<T>::sort() {
                 j -= gap;
                 this->swaps++;           // 交换次数
                 this->loopIterations++;  // 循环次数
+                this->comparisons++;
             }
             this->arr[j] = key;
         }

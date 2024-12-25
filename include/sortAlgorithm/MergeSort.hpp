@@ -39,9 +39,8 @@ class MergeSort : public Sort<T> {
               size_t speed = 1000,
               bool GUI = true,
               int order = 0)
-        : Sort<T>(input, screen, speed, GUI, order) {
-        this->stability = "Stable";
-    };
+        : Sort<T>(input, screen, speed, GUI, order) {};
+    std::string getStability() const override { return this->stability; }
 };
 
 template <typename T>
@@ -49,6 +48,7 @@ void MergeSort<T>::merge(std::vector<T>& arr,
                          size_t left,
                          size_t mid,
                          size_t right) {
+    this->functionCalls++;
     size_t n1 = mid - left + 1;  // 左子数组的长度
     size_t n2 = right - mid;     // 右子数组的长度
 
@@ -83,9 +83,11 @@ void MergeSort<T>::merge(std::vector<T>& arr,
     }
 
     while (i < n1) {
+        this->comparisons++;
         arr[k++] = leftArr[i++];
     }
     while (j < n2) {
+        this->comparisons++;
         arr[k++] = rightArr[j++];
     }
 
@@ -99,7 +101,12 @@ void MergeSort<T>::merge(std::vector<T>& arr,
 
 template <typename T>
 void MergeSort<T>::mergeSort(std::vector<T>& arr, size_t left, size_t right) {
+    this->functionCalls++;
+    this->recursionDepth++;
+    this->maxRecursionDepth =
+        std::max(this->maxRecursionDepth, this->recursionDepth);
     if (left < right) {
+        this->comparisons++;
         size_t mid = left + (right - left) / 2;
 
         mergeSort(arr, left, mid);
@@ -107,13 +114,13 @@ void MergeSort<T>::mergeSort(std::vector<T>& arr, size_t left, size_t right) {
 
         merge(arr, left, mid, right);
     }
+    this->recursionDepth--;
 }
 
 template <typename T>
 void MergeSort<T>::sort() {
-    this->comparisons = 0;
-    this->swaps = 0;
-    this->loopIterations = 0;
+    this->stability = "Stable";
+    this->functionCalls++;
 
     size_t n = this->arr.size();
     if (n <= 1)

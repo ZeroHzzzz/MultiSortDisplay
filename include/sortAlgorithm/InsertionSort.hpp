@@ -22,7 +22,7 @@ class InsertionSort : public Sort<T> {
     size_t binarySearch(const std::vector<T>& arr,
                         size_t left,
                         size_t right,
-                        const T& key) const;
+                        const T& key);
 
    public:
     /**
@@ -34,18 +34,20 @@ class InsertionSort : public Sort<T> {
                   size_t speed = 1000,
                   bool GUI = true,
                   int order = 0)
-        : Sort<T>(input, screen, speed, GUI, order) {
-        this->stability = "Stable";
-    };
+        : Sort<T>(input, screen, speed, GUI, order) {};
+    std::string getStability() const override { return this->stability; }
 };
 
 template <typename T>
 size_t InsertionSort<T>::binarySearch(const std::vector<T>& arr,
                                       size_t left,
                                       size_t right,
-                                      const T& key) const {
+                                      const T& key) {
+    this->functionCalls++;
     while (left < right) {
         size_t mid = left + (right - left) / 2;
+        this->comparisons++;
+        this->loopIterations++;
         if (arr[mid] < key) {
             left = mid + 1;
         } else {
@@ -57,6 +59,8 @@ size_t InsertionSort<T>::binarySearch(const std::vector<T>& arr,
 
 template <typename T>
 void InsertionSort<T>::sort() {
+    this->stability = "Stable";
+    this->functionCalls++;
     size_t n = this->arr.size();
     if (n <= 1)
         return;

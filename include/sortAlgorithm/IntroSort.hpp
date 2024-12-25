@@ -74,9 +74,8 @@ class IntroSort : public Sort<T> {
               size_t speed = 1000,
               bool GUI = true,
               int order = 0)
-        : Sort<T>(input, screen, speed, GUI, order) {
-        this->stability = "Unstable";
-    };
+        : Sort<T>(input, screen, speed, GUI, order) {};
+    std::string getStability() const override { return this->stability; }
 };
 
 template <typename T>
@@ -108,8 +107,8 @@ void IntroSort<T>::quickSort(size_t low, size_t high, size_t depthLimit) {
 template <typename T>
 size_t IntroSort<T>::partition(size_t low, size_t high) {
     T pivot = this->arr[high];
-    size_t i = low - 1;
-    for (size_t j = low; j < high; ++j) {
+    size_t i = low;
+    for (size_t j = low + 1; j < high; ++j) {
         this->comparisons++;
         if (this->arr[j] < pivot) {
             ++i;
@@ -184,6 +183,7 @@ void IntroSort<T>::insertionSort(size_t low, size_t high) {
 
 template <typename T>
 void IntroSort<T>::sort() {
+    this->stability = "Unstable";
     size_t n = this->arr.size();
     if (n <= 1)
         return;

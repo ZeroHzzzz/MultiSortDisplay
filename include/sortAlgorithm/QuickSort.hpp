@@ -11,14 +11,6 @@ template <typename T>
 class QuickSort : public Sort<T> {
    private:
     /**
-     * @brief 插入排序，当子数组较小时调用
-     *
-     * @param low 子数组的起始索引
-     * @param high 子数组的结束索引
-     */
-    void insertionSort(int low, int high);
-
-    /**
      * @brief 比较函数，根据排序方向进行比较
      *
      * @param a 比较的第一个元素
@@ -26,7 +18,7 @@ class QuickSort : public Sort<T> {
      * @return true 如果满足当前排序方向的条件
      * @return false 否则
      */
-    bool compare(const T& a, const T& b) const;
+    bool compare(const T& a, const T& b);
 
     /**
      * @brief 分区函数，将数组划分为两部分
@@ -38,52 +30,31 @@ class QuickSort : public Sort<T> {
     int partition(int low, int high);
 
     /**
-     * @brief 优化后的快速排序函数
+     * @brief 快速排序递归函数
      *
      * @param low 子数组的起始索引
      * @param high 子数组的结束索引
-     * @param depth 当前递归深度
      */
-    void optimizedQuickSort(int low, int high, int depth);
+    void quickSort(int low, int high);
 
    public:
     /**
      * @brief 执行快速排序
      */
     void sort() override;
+
     QuickSort(std::vector<T>& input,
               ftxui::ScreenInteractive& screen,
               size_t speed = 1000,
               bool GUI = true,
               int order = 0)
-        : Sort<T>(input, screen, speed, GUI, order) {
-        this->stability = "Unstable";
-    };
+        : Sort<T>(input, screen, speed, GUI, order) {};
+    std::string getStability() const override { return this->stability; }
 };
 
 template <typename T>
-void QuickSort<T>::insertionSort(int low, int high) {
-    for (int i = low + 1; i <= high; ++i) {
-        T key = this->arr[i];
-        int j = i - 1;
-
-        while (j >= low && compare(this->arr[j], key)) {
-            this->arr[j + 1] = this->arr[j];
-            j--;
-            this->comparisons++;
-            this->swaps++;
-        }
-        this->arr[j + 1] = key;
-
-        if (this->GUI) {
-            this->screen.PostEvent(ftxui::Event::Custom);
-            std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
-        }
-    }
-}
-
-template <typename T>
-bool QuickSort<T>::compare(const T& a, const T& b) const {
+bool QuickSort<T>::compare(const T& a, const T& b) {
+    this->functionCalls++;
     if (this->sortOrder == SortOrder::ASCENDING) {
         return a > b;
     } else {
@@ -93,13 +64,18 @@ bool QuickSort<T>::compare(const T& a, const T& b) const {
 
 template <typename T>
 int QuickSort<T>::partition(int low, int high) {
-    T pivot = this->arr[high];
-    int i = low - 1;
+    this->functionCalls++;
 
+    // 随机选择枢轴，避免最坏情况
+    int pivotIndex = low + rand() % (high - low + 1);
+    T pivot = this->arr[pivotIndex];
+    this->swap(this->arr[pivotIndex],
+               this->arr[high]);  // 将枢轴移动到数组的最后
+
+    int i = low - 1;
     for (int j = low; j < high; ++j) {
         this->comparisons++;
         this->loopIterations++;
-
         if (!compare(this->arr[j], pivot)) {
             ++i;
             this->swap(this->arr[i], this->arr[j]);
@@ -112,8 +88,7 @@ int QuickSort<T>::partition(int low, int high) {
         }
     }
 
-    this->swap(this->arr[i + 1], this->arr[high]);
-
+    this->swap(this->arr[i + 1], this->arr[high]);  // 将枢轴元素放到正确位置
     if (this->GUI) {
         this->screen.PostEvent(ftxui::Event::Custom);
         std::this_thread::sleep_for(std::chrono::milliseconds(this->SPEED));
@@ -123,35 +98,26 @@ int QuickSort<T>::partition(int low, int high) {
 }
 
 template <typename T>
-void QuickSort<T>::optimizedQuickSort(int low, int high, int depth) {
-    while (low < high) {
-        this->functionCalls++;
+void QuickSort<T>::quickSort(int low, int high) {
+    this->functionCalls++;
 
-        if (high - low + 1 <= 10) {
-            insertionSort(low, high);
-            break;
-        }
+    if (low < high) {
+        this->comparisons++;
+        this->loopIterations++;
 
+        // 获取分区后枢轴的正确位置
         int pivotIndex = partition(low, high);
 
-        if (depth > this->maxRecursionDepth) {
-            this->maxRecursionDepth = depth;
-        }
-
-        if (pivotIndex - low < high - pivotIndex) {
-            optimizedQuickSort(low, pivotIndex - 1, depth + 1);
-            low = pivotIndex + 1;
-        } else {
-            optimizedQuickSort(pivotIndex + 1, high, depth + 1);
-            high = pivotIndex - 1;
-        }
+        // 对左右子数组递归排序
+        quickSort(low, pivotIndex - 1);
+        quickSort(pivotIndex + 1, high);
     }
 }
 
 template <typename T>
 void QuickSort<T>::sort() {
-    this->functionCalls = 0;
-    this->maxRecursionDepth = 0;
+    this->stability = "Unstable";
+    this->functionCalls++;
 
-    optimizedQuickSort(0, this->arr.size() - 1, 1);
+    quickSort(0, this->arr.size() - 1);
 }

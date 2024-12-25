@@ -60,7 +60,9 @@ class Sort {
     void resetMetrics(std::map<std::string, std::string>&);  // 重置所有指标
 
     virtual void sort() = 0;  // 纯虚函数，子类需要实现具体的排序逻辑
-
+    virtual std::string getStability() const {
+        return "Unknown";  // 默认返回一个“未知”值，子类可以重写此方法
+    }
     virtual ~Sort() = default;
 };
 

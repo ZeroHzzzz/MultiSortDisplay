@@ -17,14 +17,15 @@ class BubbleSort : public Sort<T> {
                size_t speed = 1000,
                bool GUI = true,
                int order = 0)
-        : Sort<T>(input, screen, speed, GUI, order) {
-        this->stability = "Unstable";
-    };
+        : Sort<T>(input, screen, speed, GUI, order) {};
     void sort() override;
+    std::string getStability() const override { return this->stability; }
 };
 
 template <typename T>
 void BubbleSort<T>::sort() {
+    this->stability = "Unstable";
+    this->functionCalls++;
     size_t n = this->arr.size();
     bool swapped;
 
