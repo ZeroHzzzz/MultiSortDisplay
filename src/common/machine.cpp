@@ -63,20 +63,31 @@ void Machine::AutoTest(ftxui::ScreenInteractive& screen, int size) {
 }
 
 void Machine::Random(std::vector<int>& arr) {
+    arr.clear();
     for (int i = 0; i < size; ++i) {
         arr.push_back(std::rand() % 10000);  // 随机数范围：0 到 9999
     }
 }
 
 void Machine::Sorted(std::vector<int>& arr) {
+    arr.clear();
     for (int i = 0; i < size; ++i) {
-        arr.push_back(i);  // 生成升序排列的数组
+        if (win.order_selection == 0) {
+            arr.push_back(i);
+        } else {
+            arr.push_back(size - i - 1);
+        }
     }
 }
 
 void Machine::ReverseSorted(std::vector<int>& arr) {
+    arr.clear();
     for (int i = 0; i < size; ++i) {
-        arr.push_back(size - i - 1);  // 生成降序排列的数组
+        if (win.order_selection == 0) {
+            arr.push_back(size - i - 1);
+        } else {
+            arr.push_back(i);
+        }
     }
 }
 
@@ -89,12 +100,14 @@ void Machine::PartiallySorted(std::vector<int>& arr) {
 }
 
 void Machine::Duplicates(std::vector<int>& arr) {
+    arr.clear();
     for (int i = 0; i < size; ++i) {
         arr.push_back(std::rand() % 5000);
     }
 }
 
 void Machine::Same(std::vector<int>& arr) {
+    arr.clear();
     int value = std::rand();
     for (int i = 0; i < size; ++i) {
         arr.push_back(value);

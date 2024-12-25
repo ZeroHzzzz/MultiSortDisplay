@@ -81,7 +81,9 @@ class IntroSort : public Sort<T> {
 template <typename T>
 void IntroSort<T>::quickSort(size_t low, size_t high, size_t depthLimit) {
     if (low < high) {
-        if (depthLimit == 0) {
+        if (high - low <= 16) {
+            insertionSort(low, high);
+        } else if (depthLimit == 0) {
             heapSort(low, high);  // 如果递归深度超过阈值，使用堆排序
         } else {
             size_t pivotIndex = partition(low, high);
@@ -193,7 +195,7 @@ void IntroSort<T>::sort() {
     this->functionCalls++;
     quickSort(0, n - 1, depthLimit);
 
-    insertionSort(0, n - 1);
+    // insertionSort(0, n - 1);
 
     if (this->GUI) {
         this->screen.PostEvent(ftxui::Event::Custom);
