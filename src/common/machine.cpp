@@ -16,7 +16,7 @@ void Machine::ManualTest(ftxui::ScreenInteractive& screen) {
         win.algorithm_Info_text = "Running for " + win.algorithm_selected;
         screen.PostEvent(ftxui::Event::Custom);
 
-        sorter->sort();
+        sorter->executeSort();
 
         win.algorithm_Info_text = "Completed!";
         win.metrics_Info_text = "Metrics of " + win.algorithm_selected;
@@ -52,7 +52,7 @@ void Machine::AutoTest(ftxui::ScreenInteractive& screen, int size) {
         win.algorithm_Info_text = "Running for " + win.algorithm_selected;
         screen.PostEvent(ftxui::Event::Custom);
 
-        sorter->sort();
+        sorter->executeSort();
 
         win.algorithm_Info_text = "Completed!";
         win.metrics_Info_text = "Metrics of " + win.algorithm_selected;

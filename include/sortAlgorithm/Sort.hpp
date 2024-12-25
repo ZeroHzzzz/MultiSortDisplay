@@ -27,15 +27,16 @@ enum class SortOrder {
 template <typename T>
 class Sort {
    public:
-    std::vector<T>& arr;                         // 存储待排序数组
-    std::string stability = "";                  // 稳定性
-    size_t comparisons = 0;                      // 比较操作的次数
-    size_t swaps = 0;                            // 交换操作的次数
-    size_t functionCalls = 0;                    // 递归函数调用的次数
-    size_t loopIterations = 0;                   // 循环执行的次数
-    size_t recursionDepth = 0;                   // 当前递归的深度
-    size_t maxRecursionDepth = 0;                // 最大递归深度
-    std::chrono::duration<double> runTime;       // 排序运行时间
+    std::vector<T>& arr;           // 存储待排序数组
+    std::string stability = "";    // 稳定性
+    size_t comparisons = 0;        // 比较操作的次数
+    size_t swaps = 0;              // 交换操作的次数
+    size_t functionCalls = 0;      // 递归函数调用的次数
+    size_t loopIterations = 0;     // 循环执行的次数
+    size_t recursionDepth = 0;     // 当前递归的深度
+    size_t maxRecursionDepth = 0;  // 最大递归深度
+    // std::chrono::duration<double> runTime;       // 排序运行时间
+    std::string runTime;                         // 排序运行时间
     SortOrder sortOrder = SortOrder::ASCENDING;  // 排序方向，默认为递增
 
     ftxui::ScreenInteractive& screen;
@@ -54,8 +55,8 @@ class Sort {
     size_t calculateMemoryUsage() const;  // 计算数组占用的内存
 
     // void setData(const std::vector<T>& input);  // 设置待排序的数据
-    void setSortOrder(SortOrder order);                 // 设置排序方向
-    void executeSort(int speed = 0, bool gui = false);  // 执行排序
+    void setSortOrder(SortOrder order);  // 设置排序方向
+    void executeSort();                  // 执行排序
     void updateMetrics(std::map<std::string, std::string>&) const;
     void resetMetrics(std::map<std::string, std::string>&);  // 重置所有指标
 
@@ -70,7 +71,8 @@ template <typename T>
 void Sort<T>::resetMetrics(std::map<std::string, std::string>& metrics) {
     comparisons = swaps = functionCalls = loopIterations = 0;
     recursionDepth = maxRecursionDepth = 0;
-    runTime = std::chrono::duration<double>::zero();
+    // runTime = std::chrono::duration<double>::zero();
+    runTime = "0";
     stability = "";
     updateMetrics(metrics);
 }
@@ -98,16 +100,17 @@ void Sort<T>::setSortOrder(SortOrder order) {
 }
 
 template <typename T>
-void Sort<T>::executeSort(int speed, bool gui) {
-    GUI = gui;
-    SPEED = speed;
-    resetMetrics();
+void Sort<T>::executeSort() {
+    // resetMetrics();
     auto start = std::chrono::high_resolution_clock::now();
 
     functionCalls++;
     sort();
     auto end = std::chrono::high_resolution_clock::now();
-    runTime = end - start;
+
+    auto duration =
+        std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    runTime = std::to_string(duration.count());
 }
 
 template <typename T>
@@ -118,6 +121,7 @@ void Sort<T>::updateMetrics(std::map<std::string, std::string>& metrics) const {
     metrics["LoopIterations"] = std::to_string(loopIterations);
     metrics["Depth"] = std::to_string(maxRecursionDepth);
     metrics["Memory"] = std::to_string(calculateMemoryUsage());
-    metrics["RunTime"] = std::to_string(runTime.count());
+    // metrics["RunTime"] = std::to_string(runTime.count());
+    metrics["RunTime"] = runTime + " ms";
     metrics["Stability"] = stability;
 }
