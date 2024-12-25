@@ -1,5 +1,6 @@
 // Windows.cpp
 #include "windows/windows.hpp"
+#include <regex>
 #include "headfile.hpp"
 
 void Windows::Show() {
@@ -111,13 +112,32 @@ void Windows::Show() {
             if (array_input.empty()) {
                 algorithm_Info_text = "Please enter a valid array";
             } else {
-                std::stringstream ss(array_input);
-                int value;
-                while (ss >> value) {
-                    if (value > 0) {  // 过滤负数
-                        data.push_back(value);
+                std::regex re("[^0-9-]+");
+                std::sregex_token_iterator it(array_input.begin(),
+                                              array_input.end(), re, -1);
+                std::sregex_token_iterator end;
+
+                for (; it != end; ++it) {
+                    std::string token = *it;
+                    if (!token.empty()) {
+                        try {
+                            int value = std::stoi(token);  // 转换为整数
+                            if (value > 0) {               // 过滤负数
+                                data.push_back(value);
+                            }
+                        } catch (const std::invalid_argument&) {
+                            // 如果转换失败，忽略这个token
+                        }
                     }
                 }
+                // std::stringstream ss(array_input);
+
+                // int value;
+                // while (ss >> value) {
+                //     if (value > 0) {  // 过滤负数
+                //         data.push_back(value);
+                //     }
+                // }
 
                 if (!sort_running.load()) {
                     sort_running.store(true);
