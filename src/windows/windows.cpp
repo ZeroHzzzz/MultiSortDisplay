@@ -33,19 +33,24 @@ void Windows::Show() {
         std::vector<Element> bars;
 
         if (win.mode_selection && win.graphics_selection) {
-            int max_height = 10;  // 最大显示高度
+            int max_height = 30;  // 最大显示高度
             if (!data.empty()) {
-                int max_value = *std::max_element(data.begin(), data.end());
-                for (int& value : data) {
-                    value = max_value > max_height
-                                ? value * max_height / max_value
-                                : value;
+                int max_value =
+                    std::max_element(data.begin(), data.end(),
+                                     [](const Arr<int>& a, const Arr<int>& b) {
+                                         return a.value < b.value;
+                                     })
+                        ->value;
+                for (Arr<int>& item : data) {
+                    item.value = max_value > max_height
+                                     ? item.value * max_height / max_value
+                                     : item.value;
                 }
             }
-            for (int value : data) {
-                std::string result(value, '#');
+            for (const Arr<int>& item : data) {
+                std::string result(item.value, '#');
                 bars.push_back(hbox({
-                    text(std::to_string(value)),  // 显示数值
+                    text(std::to_string(item.value)),  // 显示数值
                     text(result),
                 }));
             }
@@ -117,13 +122,14 @@ void Windows::Show() {
                                               array_input.end(), re, -1);
                 std::sregex_token_iterator end;
 
+                int index = 0;
                 for (; it != end; ++it) {
                     std::string token = *it;
                     if (!token.empty()) {
                         try {
                             int value = std::stoi(token);   // 转换为整数
                             if (value > 0 && value < 10) {  // 过滤负数
-                                data.push_back(value);
+                                data.push_back(Arr<int>(value, index++));
                             }
                         } catch (const std::invalid_argument&) {
                             // 如果转换失败，忽略这个token

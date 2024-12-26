@@ -24,7 +24,7 @@ class ShellSort : public Sort<T> {
 
 template <typename T>
 void ShellSort<T>::sort() {
-    this->stability = "Unstable";
+    // this->stability = "Unstable";
     this->functionCalls++;
     size_t n = this->arr.size();
     if (n <= 1)

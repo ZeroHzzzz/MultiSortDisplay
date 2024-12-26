@@ -185,7 +185,7 @@ void IntroSort<T>::insertionSort(size_t low, size_t high) {
 
 template <typename T>
 void IntroSort<T>::sort() {
-    this->stability = "Unstable";
+    // this->stability = "Unstable";
     size_t n = this->arr.size();
     if (n <= 1)
         return;

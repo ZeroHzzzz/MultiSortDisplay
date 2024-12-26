@@ -1,5 +1,4 @@
 #pragma once
-
 #include <algorithm>  // for std::swap
 #include <atomic>
 #include <chrono>
@@ -13,6 +12,7 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include "common/Arr.hpp"
 
 using namespace ftxui;
 
@@ -31,7 +31,7 @@ class Windows {
         "Please select an algorithm. Default : BubbleSort";  // 算法信息
     std::string algorithm_selected = "BubbleSort";           // 用户选择的算法
     std::string array_input = "";                            // 用户输入的数组
-    std::vector<int> data;  // 用于显示的数组数据
+    std::vector<Arr<int>> data;  // 用于显示的数组数据
     std::atomic<bool> sort_running{false};
 
     // 设置项状态变量

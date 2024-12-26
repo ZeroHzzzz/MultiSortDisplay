@@ -8,9 +8,11 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include "common/Arr.hpp"
+
 class Machine {
    public:
-    std::vector<int> sort_array;  // Use to store the array to be sorted
+    std::vector<Arr<int>> sort_array;  // Use to store the array to be sorted
     std::map<std::string, int> speed = {{"0.5x", 2000},
                                         {"1x", 1000},
                                         {"1.5x", 750},
@@ -24,7 +26,7 @@ class Machine {
     //                    {"PartiallySorted", &Machine::PartiallySorted},
     //                    {"Duplicates", &Machine::Duplicates},
     //                    {"Same", &Machine::Same}};
-    std::unordered_map<std::string, void (Machine::*)(std::vector<int>&)>
+    std::unordered_map<std::string, void (Machine::*)(std::vector<Arr<int>>&)>
         options_map = {{"Random", &Machine::Random},
                        {"Sorted", &Machine::Sorted},
                        {"Reversed", &Machine::ReverseSorted},
@@ -35,13 +37,14 @@ class Machine {
 
     void AutoTest(ftxui::ScreenInteractive& screen, int size);
     void ManualTest(ftxui::ScreenInteractive& screen);
+    bool StableTest(std::vector<Arr<int>>& arr);
 
-    void Random(std::vector<int>& arr);
-    void Sorted(std::vector<int>& arr);
-    void ReverseSorted(std::vector<int>& arr);
-    void PartiallySorted(std::vector<int>& arr);
-    void Duplicates(std::vector<int>& arr);
-    void Same(std::vector<int>& arr);
+    void Random(std::vector<Arr<int>>& arr);
+    void Sorted(std::vector<Arr<int>>& arr);
+    void ReverseSorted(std::vector<Arr<int>>& arr);
+    void PartiallySorted(std::vector<Arr<int>>& arr);
+    void Duplicates(std::vector<Arr<int>>& arr);
+    void Same(std::vector<Arr<int>>& arr);
 
     size_t size = 10001;
 };

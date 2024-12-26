@@ -59,7 +59,7 @@ size_t InsertionSort<T>::binarySearch(const std::vector<T>& arr,
 
 template <typename T>
 void InsertionSort<T>::sort() {
-    this->stability = "Stable";
+    // this->stability = "Stable";
     this->functionCalls++;
     size_t n = this->arr.size();
     if (n <= 1)

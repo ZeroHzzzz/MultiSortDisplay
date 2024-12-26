@@ -141,7 +141,7 @@ void TimSort<T>::timSort() {
 
 template <typename T>
 void TimSort<T>::sort() {
-    this->stability = "Stable";
+    // this->stability = "Stable";
     if (this->arr.size() <= 1)
         return;
 
