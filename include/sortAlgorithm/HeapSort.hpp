@@ -84,7 +84,6 @@ void HeapSort<T>::sort() {
 
     // 构建最大堆
     for (size_t i = n / 2; i-- > 0;) {  // 从最后一个非叶子节点开始
-        this->comparisons++;
         this->loopIterations++;
         heapify(this->arr, n, i);
     }
@@ -94,7 +93,6 @@ void HeapSort<T>::sort() {
         // 交换堆顶元素和当前堆的最后一个元素
         this->swap(this->arr[0], this->arr[i]);
         this->swaps++;  // 增加交换次数
-        this->comparisons++;
         this->loopIterations++;
         // 调整堆，恢复堆性质
         heapify(this->arr, i, 0);  // i 是堆的大小

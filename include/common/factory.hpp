@@ -75,7 +75,7 @@ std::unique_ptr<Sort<T>> SortFactory<T>::create(
     throw std::runtime_error("Sort type not registered");
 }
 
-// 实现 registerType 方法
+// 实现 registerType Ftxui方法
 template <typename T>
 void SortFactory<T>::registerType(
     const std::string& name,
