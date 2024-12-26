@@ -119,7 +119,7 @@ void MergeSort<T>::mergeSort(std::vector<T>& arr, size_t left, size_t right) {
 
 template <typename T>
 void MergeSort<T>::sort() {
-    this->stability = "Stable";
+    // this->stability = "Stable";
     this->functionCalls++;
 
     size_t n = this->arr.size();

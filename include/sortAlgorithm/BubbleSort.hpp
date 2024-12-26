@@ -24,7 +24,7 @@ class BubbleSort : public Sort<T> {
 
 template <typename T>
 void BubbleSort<T>::sort() {
-    this->stability = "Unstable";
+    // this->stability = "Unstable";
     this->functionCalls++;
     size_t n = this->arr.size();
     bool swapped;

@@ -37,6 +37,7 @@ class Machine {
 
     void AutoTest(ftxui::ScreenInteractive& screen, int size);
     void ManualTest(ftxui::ScreenInteractive& screen);
+    bool StableTest(std::vector<Arr<int>>& arr);
 
     void Random(std::vector<Arr<int>>& arr);
     void Sorted(std::vector<Arr<int>>& arr);

@@ -76,7 +76,7 @@ void HeapSort<T>::heapify(std::vector<T>& arr, size_t n, size_t i) {
 
 template <typename T>
 void HeapSort<T>::sort() {
-    this->stability = "Unstable";
+    // this->stability = "Unstable";
     this->functionCalls++;
     size_t n = this->arr.size();
     if (n <= 1)

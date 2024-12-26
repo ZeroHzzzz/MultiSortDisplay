@@ -18,6 +18,8 @@ void Machine::ManualTest(ftxui::ScreenInteractive& screen) {
 
         sorter->executeSort();
 
+        sorter->stability = StableTest(win.data) ? "Stable" : "Unstable";
+
         win.algorithm_Info_text = "Completed!";
         win.metrics_Info_text = "Metrics of " + win.algorithm_selected;
         sorter->updateMetrics(win.metrics);
@@ -53,6 +55,8 @@ void Machine::AutoTest(ftxui::ScreenInteractive& screen, int size) {
         screen.PostEvent(ftxui::Event::Custom);
 
         sorter->executeSort();
+
+        sorter->stability = StableTest(test_data) ? "Stable" : "Unstable";
 
         win.algorithm_Info_text = "Completed!";
         win.metrics_Info_text = "Metrics of " + win.algorithm_selected;
@@ -113,4 +117,18 @@ void Machine::Same(std::vector<Arr<int>>& arr) {
     for (int i = 0; i < size; ++i) {
         arr.push_back(Arr<int>(value, i));
     }
+}
+
+bool Machine::StableTest(std::vector<Arr<int>>& arr) {
+    for (size_t i = 1; i < arr.size(); ++i) {
+        if (arr[i].value == arr[i - 1].value) {
+            if (arr[i].index < arr[i - 1].index) {
+                // 如果索引顺序发生了变化，说明排序不稳定
+                return false;
+            }
+        }
+    }
+
+    // 如果没有发现稳定性问题，返回true
+    return true;
 }

@@ -116,7 +116,7 @@ void QuickSort<T>::quickSort(int low, int high) {
 
 template <typename T>
 void QuickSort<T>::sort() {
-    this->stability = "Unstable";
+    // this->stability = "Unstable";
     this->functionCalls++;
 
     quickSort(0, this->arr.size() - 1);
