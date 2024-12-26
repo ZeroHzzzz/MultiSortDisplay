@@ -1,4 +1,5 @@
 #pragma once
+#include "common/Arr.hpp"
 #include "common/factory.hpp"
 #include "common/machine.hpp"
 #include "sortAlgorithm/BubbleSort.hpp"
@@ -13,7 +14,7 @@
 #include "windows/windows.hpp"
 
 extern Machine Testmachine;
-extern SortFactory<int> factory;
+extern SortFactory<Arr<int>> factory;
 extern Windows win;  // 窗口
 
-template class SortFactory<int>;
+template class SortFactory<Arr<int>>;

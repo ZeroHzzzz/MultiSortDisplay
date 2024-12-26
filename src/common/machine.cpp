@@ -30,7 +30,7 @@ void Machine::ManualTest(ftxui::ScreenInteractive& screen) {
 void Machine::AutoTest(ftxui::ScreenInteractive& screen, int size) {
     try {
         this->size = size;
-        std::vector<int> test_data;
+        std::vector<Arr<int>> test_data;
 
         auto it =
             options_map.find(win.data_type_options[win.data_type_selected]);
@@ -62,54 +62,55 @@ void Machine::AutoTest(ftxui::ScreenInteractive& screen, int size) {
     }
 }
 
-void Machine::Random(std::vector<int>& arr) {
+void Machine::Random(std::vector<Arr<int>>& arr) {
     arr.clear();
     for (int i = 0; i < size; ++i) {
-        arr.push_back(std::rand() % 10000);  // 随机数范围：0 到 9999
+        arr.push_back(
+            Arr<int>(std::rand() % 10000, i));  // 随机数范围：0 到 9999
     }
 }
 
-void Machine::Sorted(std::vector<int>& arr) {
+void Machine::Sorted(std::vector<Arr<int>>& arr) {
     arr.clear();
     for (int i = 0; i < size; ++i) {
         if (win.order_selection == 0) {
-            arr.push_back(i);
+            arr.push_back(Arr<int>(i, i));
         } else {
-            arr.push_back(size - i - 1);
+            arr.push_back(Arr<int>(size - i - 1, i));
         }
     }
 }
 
-void Machine::ReverseSorted(std::vector<int>& arr) {
+void Machine::ReverseSorted(std::vector<Arr<int>>& arr) {
     arr.clear();
     for (int i = 0; i < size; ++i) {
         if (win.order_selection == 0) {
-            arr.push_back(size - i - 1);
+            arr.push_back(Arr<int>(size - i - 1, i));
         } else {
-            arr.push_back(i);
+            arr.push_back(Arr<int>(i, i));
         }
     }
 }
 
-void Machine::PartiallySorted(std::vector<int>& arr) {
+void Machine::PartiallySorted(std::vector<Arr<int>>& arr) {
     // 先生成升序数组，然后随机打乱一部分元素
     Sorted(arr);
     for (int i = 0; i < size / 10; ++i) {  // 打乱大约10%的元素
-        arr[std::rand() % size] = std::rand() % 10000;
+        arr[std::rand() % size] = Arr<int>(std::rand() % 10000, i);
     }
 }
 
-void Machine::Duplicates(std::vector<int>& arr) {
+void Machine::Duplicates(std::vector<Arr<int>>& arr) {
     arr.clear();
     for (int i = 0; i < size; ++i) {
-        arr.push_back(std::rand() % 5000);
+        arr.push_back(Arr<int>(std::rand() % 5000, i));
     }
 }
 
-void Machine::Same(std::vector<int>& arr) {
+void Machine::Same(std::vector<Arr<int>>& arr) {
     arr.clear();
     int value = std::rand();
     for (int i = 0; i < size; ++i) {
-        arr.push_back(value);
+        arr.push_back(Arr<int>(value, i));
     }
 }
